@@ -228,20 +228,6 @@
             box-shadow: 0 0 20px rgba(60, 100, 255, 0.2);
         }
 
-        /* Loading spinner */
-        .loading {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(100, 160, 255, 0.2);
-            border-radius: 50%;
-            border-top-color: #7ab4ff;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
         /* Floating text */
         .float-txt {
             position: absolute;
@@ -452,7 +438,7 @@ function createDesk(x, z, rotation) {
     top.position.y = 0.76; top.castShadow = true; top.receiveShadow = true;
     g.add(top);
 
-    [[−1.3, 0, −0.6],[1.3,0,−0.6],[−1.3,0,0.6],[1.3,0,0.6]].forEach(([px,py,pz]) => {
+    [[-1.3, 0, -0.6],[1.3,0,-0.6],[-1.3,0,0.6],[1.3,0,0.6]].forEach(([px,py,pz]) => {
         const leg = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.72, 0.06), metalMat);
         leg.position.set(px, 0.36, pz);
         g.add(leg);
@@ -506,7 +492,7 @@ wbSprite.scale.set(7, 2.8, 1);
 scene.add(wbSprite);
 
 // ─── PLANTS ──────────────────────────────────────────────────────────────────
-[[−16, −16],[16, −16],[−16, 12]].forEach(([x,z]) => {
+[[-16, -16],[16, -16],[-16, 12]].forEach(([x,z]) => {
     const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.22, 0.35, 8),
         new THREE.MeshStandardMaterial({ color: 0x1a2a1a }));
     pot.position.set(x, 0.17, z);
@@ -574,7 +560,7 @@ function createCharacter(data) {
     // Arms
     const armGeo = new THREE.CylinderGeometry(0.07, 0.07, 0.55, 6);
     const lArm = new THREE.Mesh(armGeo, bodyMat);
-    lArm.position.set(−0.28, 0.68, 0); lArm.rotation.z = Math.PI / 9;
+    lArm.position.set(-0.28, 0.68, 0); lArm.rotation.z = Math.PI / 9;
     lArm.castShadow = true; g.add(lArm);
     const rArm = new THREE.Mesh(armGeo, bodyMat);
     rArm.position.set(0.28, 0.68, 0); rArm.rotation.z = -Math.PI / 9;
@@ -583,7 +569,7 @@ function createCharacter(data) {
     // Legs
     const legGeo = new THREE.CylinderGeometry(0.09, 0.09, 0.7, 6);
     const lLeg = new THREE.Mesh(legGeo, pantsMat);
-    lLeg.position.set(−0.13, 0.35, 0); g.add(lLeg);
+    lLeg.position.set(-0.13, 0.35, 0); g.add(lLeg);
     const rLeg = new THREE.Mesh(legGeo, pantsMat);
     rLeg.position.set(0.13, 0.35, 0); g.add(rLeg);
 
@@ -598,7 +584,7 @@ function createCharacter(data) {
     // Eyes
     const eyeGeo = new THREE.SphereGeometry(0.025, 4, 4);
     const eyeMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
-    const lEye = new THREE.Mesh(eyeGeo, eyeMat); lEye.position.set(−0.07, 1.22, 0.2); g.add(lEye);
+    const lEye = new THREE.Mesh(eyeGeo, eyeMat); lEye.position.set(-0.07, 1.22, 0.2); g.add(lEye);
     const rEye = new THREE.Mesh(eyeGeo, eyeMat); rEye.position.set(0.07, 1.22, 0.2); g.add(rEye);
 
     // Label
@@ -625,7 +611,7 @@ function createCharacter(data) {
 const andrew = createCharacter({
     name: 'Andrew',
     role: 'Marketer',
-    x: −8, z: −2,
+    x: -8, z: -2,
     shirtColor: 0x2a5080,
     hairColor: 0x3a2a1a,
     labelColor: '#55aaff',
@@ -659,7 +645,7 @@ const andrew = createCharacter({
 const justine = createCharacter({
     name: 'Justine',
     role: 'Chief of Staff',
-    x: 0, z: −2,
+    x: 0, z: -2,
     shirtColor: 0x4a2080,
     hairColor: 0x1a0a05,
     labelColor: '#aa77ff',
@@ -693,7 +679,7 @@ const justine = createCharacter({
 const patrick = createCharacter({
     name: 'Patrick',
     role: 'New Space Manager',
-    x: 8, z: −2,
+    x: 8, z: -2,
     shirtColor: 0x1a5030,
     hairColor: 0x2a1a0a,
     labelColor: '#44cc88',
@@ -756,6 +742,7 @@ document.addEventListener('keydown', e => {
     if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) e.preventDefault();
     if (e.key === 'Escape') { closeDlg(); if (document.pointerLockElement) document.exitPointerLock(); }
 });
+
 document.addEventListener('keyup', e => {
     if (document.activeElement === document.getElementById('custom-q-input')) return;
     keys[e.key] = false;
@@ -771,279 +758,157 @@ document.addEventListener('mousemove', e => {
         camYaw -= e.movementX * 0.002;
     }
 });
+
+// Pointer lock for looking around when clicking the canvas
 renderer.domElement.addEventListener('click', () => {
-    if (dlgBox.style.display !== 'block') renderer.domElement.requestPointerLock();
+    if (dlgBox.style.display !== 'block') {
+        renderer.domElement.requestPointerLock();
+    }
 });
 
-// ─── CHARACTER AI ─────────────────────────────────────────────────────────────
+// ─── DIALOGUE SYSTEM & LOGIC ──────────────────────────────────────────────────
 let nearbyChar = null;
-let currentChar = null;
-
-function updateChar(ch, dt) {
-    const ud = ch.userData;
-    if (ch === currentChar) {
-        ch.lookAt(new THREE.Vector3(player.pos.x, ch.position.y, player.pos.z));
-        ch.rotation.x = 0; ch.rotation.z = 0;
-        return;
-    }
-    if (ud.isDancing) {
-        ch.rotation.y += 0.08;
-        ch.position.y = Math.abs(Math.sin(Date.now() * 0.008)) * 0.25;
-        ud.lArm.rotation.z = Math.sin(Date.now() * 0.012) * 0.6 + Math.PI / 9;
-        ud.rArm.rotation.z = -Math.sin(Date.now() * 0.012) * 0.6 - Math.PI / 9;
-        return;
-    }
-    ud.lArm.rotation.z = Math.PI / 9;
-    ud.rArm.rotation.z = -Math.PI / 9;
-
-    if (Math.random() < 0.0006) {
-        ud.isDancing = true;
-        floatText(ud.emoji, ch.position.clone().add(new THREE.Vector3(0, 1.5, 0)));
-        setTimeout(() => { ud.isDancing = false; ch.position.y = 0; ch.rotation.y = 0; }, 3500);
-    }
-
-    ud.moveTimer -= dt;
-    if (ud.moveTimer <= 0) {
-        const angle = Math.random() * Math.PI * 2;
-        const dist = 2 + Math.random() * 4;
-        ud.targetPos.set(
-            Math.max(-18, Math.min(18, ud.initPos.x + Math.cos(angle) * dist)),
-            0,
-            Math.max(-18, Math.min(18, ud.initPos.z + Math.sin(angle) * dist))
-        );
-        ud.moveTimer = 4 + Math.random() * 6;
-    }
-    const dir = new THREE.Vector3().subVectors(ud.targetPos, ch.position);
-    dir.y = 0;
-    if (dir.length() > 0.15) {
-        dir.normalize();
-        ch.position.addScaledVector(dir, 0.018);
-        ch.lookAt(ud.targetPos); ch.rotation.x = 0; ch.rotation.z = 0;
-        ch.position.y = Math.abs(Math.sin(Date.now() * 0.007)) * 0.04;
-    }
-}
-
-// ─── DIALOGUE ─────────────────────────────────────────────────────────────────
-const dlgContent = document.getElementById('dialogue-content');
-const dlgOptions = document.getElementById('dialogue-options');
-const dlgAvatar = document.getElementById('dialogue-avatar');
-const dlgName = document.getElementById('dialogue-name');
-const dlgRole = document.getElementById('dialogue-role');
 const promptEl = document.getElementById('interact-prompt');
-const qInput = document.getElementById('custom-q-input');
-const qBtn = document.getElementById('custom-q-btn');
+const contentEl = document.getElementById('dialogue-content');
 
-const QUESTIONS = [
-    "What does a typical week look like for you?",
-    "What's the biggest challenge in your role right now?",
-    "What makes ISU different from other space education providers?",
-    "How do you explain ESC to someone who's never heard of ISU?",
-    "What's the most common misconception about what you do?",
-    "What does success look like for the team in 2026?",
-    "Which custom programme opportunity excites you most?",
-    "How do you know when a programme is actually working?",
-    "What does 'legitimacy in the space sector' actually mean in practice?",
-    "What's your honest take on ISU's biggest weakness right now?",
-    "What type of participant gets the most out of ESC?",
-    "How do you pitch ISU to a government partner with no space budget?",
-    "What's the hardest conversation you've had with a partner or prospect?",
-    "If you could change one thing about how we market our programmes, what would it be?",
-    "What keeps you motivated in this work?",
-];
-
-function getOptions() {
-    return QUESTIONS.sort(() => Math.random() - 0.5).slice(0, 4);
-}
-
-const avatarColors = { Andrew: '#2255aa', Justine: '#6633aa', Patrick: '#1a6633' };
-
-function openDlg(ch) {
-    currentChar = ch;
-    const ud = ch.userData;
-    dlgBox.style.display = 'block';
-    dlgAvatar.textContent = ud.emoji;
-    dlgAvatar.style.background = avatarColors[ud.name] || '#223';
-    dlgName.textContent = ud.name;
-    dlgRole.textContent = ud.role + ' · ISU Short Courses';
+function openDlg(char) {
     if (document.pointerLockElement) document.exitPointerLock();
-    const greeting = ud.conversations.length === 0
-        ? `Hey! ${ud.name} here. ${randomGreeting(ud)}`
-        : `<strong>You:</strong> ${ud.conversations.at(-1).q}<br><strong>${ud.name}:</strong> ${ud.conversations.at(-1).a}`;
-    dlgContent.innerHTML = `<p>${greeting}</p>`;
-    renderOptions();
-    qInput.value = '';
-    setTimeout(() => qInput.focus(), 80);
-}
-
-function randomGreeting(ud) {
-    const g = [
-        `Good to see you. What's on your mind?`,
-        `Perfect timing — I was just thinking about the next programme push.`,
-        `Come in. What do you need to figure out?`,
-        `Hey. Ask me anything — I've been deep in ${ud.role.toLowerCase()} mode all day.`
-    ];
-    return g[Math.floor(Math.random() * g.length)];
+    dlgBox.style.display = 'block';
+    
+    document.getElementById('dialogue-avatar').textContent = char.userData.emoji;
+    document.getElementById('dialogue-name').textContent = char.userData.name;
+    document.getElementById('dialogue-role').textContent = char.userData.role;
+    
+    // Welcome message
+    contentEl.innerHTML = `<p><strong>${char.userData.name}:</strong> Hey, I'm ${char.userData.name}. What do you want to chat about?</p>`;
+    
+    // Populate options
+    const optionsEl = document.getElementById('dialogue-options');
+    optionsEl.innerHTML = '';
+    
+    Object.keys(char.userData.topics).forEach(topic => {
+        if (topic !== 'default') {
+            const btn = document.createElement('button');
+            btn.className = 'dialogue-option';
+            btn.textContent = `Ask about ${topic}`;
+            btn.onclick = () => {
+                const responses = char.userData.topics[topic];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                contentEl.innerHTML += `<p><strong>You:</strong> Let's talk about ${topic}.</p>`;
+                contentEl.innerHTML += `<p><strong>${char.userData.name}:</strong> ${randomResponse}</p>`;
+                contentEl.scrollTop = contentEl.scrollHeight;
+            };
+            optionsEl.appendChild(btn);
+        }
+    });
 }
 
 function closeDlg() {
     dlgBox.style.display = 'none';
-    currentChar = null;
+    document.getElementById('custom-q-input').value = '';
 }
 
-function renderOptions() {
-    dlgOptions.innerHTML = '';
-    getOptions().forEach(q => {
-        const d = document.createElement('div');
-        d.className = 'dialogue-option';
-        d.textContent = q;
-        d.onclick = () => ask(q);
-        dlgOptions.appendChild(d);
-    });
-}
+// Custom question button handler
+document.getElementById('custom-q-btn').addEventListener('click', () => {
+    const input = document.getElementById('custom-q-input');
+    const q = input.value.trim();
+    if (!q || !nearbyChar) return;
+    
+    contentEl.innerHTML += `<p><strong>You:</strong> ${q}</p>`;
+    
+    const defs = nearbyChar.userData.topics.default;
+    const response = defs[Math.floor(Math.random() * defs.length)];
+    
+    // Simulate thinking delay
+    setTimeout(() => {
+        contentEl.innerHTML += `<p><strong>${nearbyChar.userData.name}:</strong> ${response}</p>`;
+        contentEl.scrollTop = contentEl.scrollHeight;
+    }, 400);
+    
+    input.value = '';
+});
 
-async function ask(question) {
-    if (!currentChar) return;
-    const ud = currentChar.userData;
+// ─── MAIN ANIMATION LOOP ──────────────────────────────────────────────────────
+const clock = new THREE.Clock();
 
-    dlgContent.innerHTML += `<p><strong>You:</strong> ${question}</p>`;
-    dlgContent.innerHTML += `<p><strong>${ud.name}:</strong> <span class="loading"></span></p>`;
-    dlgContent.scrollTop = dlgContent.scrollHeight;
-
-    dlgOptions.style.opacity = '0.4';
-    dlgOptions.style.pointerEvents = 'none';
-    qInput.disabled = true; qBtn.disabled = true;
-
-    let answer = '';
-    try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 1000,
-                messages: [{
-                    role: 'user',
-                    content: `You are roleplaying as ${ud.name}, ${ud.role} on the ISU Short Courses team at the International Space University in Strasbourg, France.
-
-Your personality: ${ud.personality}
-Your quirk: ${ud.quirk}
-
-ISU context: ISU is a legitimacy and judgment institution for the global space sector, not just an education provider. The team sells and delivers short executive courses (ESC: 4 days, ~€3,900), the SSP, and custom partner programmes for governments, defence and corporate clients. The core insight is participants aren't buying content — they're buying legitimacy, decision-making ability, confidence and belonging in the space sector. Custom programmes are the primary growth engine.
-
-The user asked: "${question}"
-
-Reply as ${ud.name} in 50-75 words. Be direct, specific to your role, and genuinely useful. Speak like a real professional, not a chatbot. Reference ISU, space sector realities, or team dynamics naturally.
-
-Return ONLY valid JSON: {"a": "your response here"}`
-                }]
-            })
-        });
-        const data = await res.json();
-        const raw = data?.content?.[0]?.text || '';
-        const clean = raw.replace(/```json|```/g, '').trim();
-        answer = JSON.parse(clean).a;
-    } catch {
-        answer = fallback(ud, question);
-    }
-
-    ud.conversations.push({ q: question, a: answer });
-    dlgContent.innerHTML = dlgContent.innerHTML.replace('<span class="loading"></span>', answer);
-    dlgContent.scrollTop = dlgContent.scrollHeight;
-
-    if (Math.random() < 0.3) floatText('💡', currentChar.position.clone().add(new THREE.Vector3(0, 1.5, 0)));
-
-    renderOptions();
-    dlgOptions.style.opacity = '1';
-    dlgOptions.style.pointerEvents = 'auto';
-    qInput.disabled = false; qBtn.disabled = false;
-    qInput.focus();
-}
-
-function fallback(ud, q) {
-    const ql = q.toLowerCase();
-    const topics = ud.topics;
-    let key = 'default';
-    if (ql.includes('market') || ql.includes('messag') || ql.includes('audience') || ql.includes('campaign')) key = 'marketing';
-    else if (ql.includes('operat') || ql.includes('process') || ql.includes('system') || ql.includes('crm')) key = 'operations';
-    else if (ql.includes('partner') || ql.includes('deal') || ql.includes('prospect')) key = 'partnerships';
-    else if (ql.includes('programme') || ql.includes('esc') || ql.includes('ssp') || ql.includes('custom')) key = 'programmes';
-    else if (ql.includes('coord') || ql.includes('team') || ql.includes('connect')) key = 'coordination';
-    else if (ql.includes('bd') || ql.includes('pipeline') || ql.includes('revenue')) key = 'bd';
-    else if (ql.includes('isu') || ql.includes('differenc') || ql.includes('strength')) key = ud.name === 'Justine' ? 'isu' : 'default';
-    else if (ql.includes('audience') || ql.includes('segment')) key = 'audience';
-    else if (ql.includes('custom')) key = 'custom';
-
-    const pool = topics[key] || topics['default'];
-    return pool[Math.floor(Math.random() * pool.length)];
-}
-
-// ─── CUSTOM Q HANDLERS ────────────────────────────────────────────────────────
-qBtn.addEventListener('click', () => { const v = qInput.value.trim(); if (v && currentChar) { ask(v); qInput.value = ''; } });
-qInput.addEventListener('keypress', e => { if (e.key === 'Enter') { const v = qInput.value.trim(); if (v && currentChar) { ask(v); qInput.value = ''; } } });
-
-// ─── ANIMATION LOOP ───────────────────────────────────────────────────────────
-let lastT = 0;
-function animate(t) {
+function animate() {
     requestAnimationFrame(animate);
-    const dt = Math.min((t - lastT) / 1000, 0.1);
-    lastT = t;
+    const dt = clock.getDelta();
+    const time = clock.getElapsedTime();
 
-    // Player movement
-    if (!player.isDancing && dlgBox.style.display !== 'block') {
-        const spd = 0.09;
-        const fwd = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), camYaw);
-        const rgt = new THREE.Vector3(1, 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), camYaw);
-        if (keys['w'] || keys['W']) player.pos.addScaledVector(fwd, spd);
-        if (keys['s'] || keys['S']) player.pos.addScaledVector(fwd, -spd);
-        if (keys['a'] || keys['A']) player.pos.addScaledVector(rgt, -spd);
-        if (keys['d'] || keys['D']) player.pos.addScaledVector(rgt, spd);
-        if (keys['ArrowLeft'])  camYaw += 0.04;
-        if (keys['ArrowRight']) camYaw -= 0.04;
+    // 1. Player Movement (WASD)
+    if (dlgBox.style.display !== 'block') {
+        const speed = 6 * dt;
+        const dir = new THREE.Vector3();
+        
+        if (keys['w'] || keys['W']) dir.z -= 1;
+        if (keys['s'] || keys['S']) dir.z += 1;
+        if (keys['a'] || keys['A']) dir.x -= 1;
+        if (keys['d'] || keys['D']) dir.x += 1;
+
+        if (dir.lengthSq() > 0) {
+            dir.normalize();
+            // Move relative to camera direction
+            dir.applyAxisAngle(new THREE.Vector3(0, 1, 0), camYaw);
+            player.pos.add(dir.multiplyScalar(speed));
+        }
+        
+        // Basic office boundaries
+        player.pos.x = Math.max(-18, Math.min(18, player.pos.x));
+        player.pos.z = Math.max(-18, Math.min(18, player.pos.z));
     }
-
-    player.pos.x = Math.max(-19, Math.min(19, player.pos.x));
-    player.pos.z = Math.max(-19, Math.min(19, player.pos.z));
 
     camera.position.copy(player.pos);
-    if (!player.isDancing) {
-        if (dlgBox.style.display !== 'block') {
-            camera.rotation.set(0, camYaw, 0, 'YXZ');
+    camera.rotation.y = camYaw;
+
+    // 2. Character Logic & Interaction Distance
+    let closestChar = null;
+    let minDist = 3.5; // Interaction radius
+
+    characters.forEach(char => {
+        const data = char.userData;
+        const dist = camera.position.distanceTo(char.position);
+        
+        if (dist < minDist) {
+            minDist = dist;
+            closestChar = char;
         }
-    } else {
-        camera.position.y += Math.sin(t * 0.008) * 0.15;
-        camera.rotation.set(0, camYaw, Math.sin(t * 0.008) * 0.06, 'YXZ');
-    }
 
-    // Update characters
-    characters.forEach(ch => updateChar(ch, dt));
+        // Idle floating animation
+        char.position.y = Math.sin(time * 2 + data.x) * 0.03;
 
-    // Nearest character
-    nearbyChar = null;
-    let minD = Infinity;
-    characters.forEach(ch => {
-        const d = player.pos.distanceTo(ch.position);
-        if (d < 3.5 && d < minD) { minD = d; nearbyChar = ch; }
+        // Face player if close
+        if (dist < 6) {
+            char.lookAt(camera.position.x, char.position.y, camera.position.z);
+        } else {
+            char.rotation.y = 0;
+        }
+
+        // Dancing easter egg (Spacebar)
+        if (player.isDancing && dist < 12) {
+            data.lArm.rotation.x = Math.sin(time * 15) * 0.8;
+            data.rArm.rotation.x = Math.sin(time * 15 + Math.PI) * 0.8;
+            char.position.y += Math.abs(Math.sin(time * 10)) * 0.1; 
+        } else {
+            data.lArm.rotation.x = 0;
+            data.rArm.rotation.x = 0;
+        }
     });
-    if (nearbyChar && !currentChar) {
+
+    // 3. UI Prompt Update
+    nearbyChar = closestChar;
+    if (nearbyChar && dlgBox.style.display !== 'block') {
         promptEl.style.display = 'block';
-        promptEl.textContent = `[E] Talk to ${nearbyChar.userData.name}`;
+        promptEl.textContent = `Press E to talk to ${nearbyChar.userData.name}`;
     } else {
         promptEl.style.display = 'none';
     }
 
-    // Ambient ceiling light pulse
-    fillLight.intensity = 0.55 + Math.sin(t * 0.001) * 0.05;
-
     renderer.render(scene, camera);
 }
 
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-animate(0);
+// Start the engine
+animate();
 </script>
 </body>
 </html>
