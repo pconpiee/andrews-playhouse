@@ -3,1383 +3,1047 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anthropic Co-Founders Office - Interactive Experience</title>
+    <title>ISU Team Office — Interactive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #000;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #000;
+            overflow: hidden;
+        }
+
         #canvas-container {
             width: 100vw;
             height: 100vh;
             position: relative;
         }
-        
-        #ui-overlay {
+
+        /* HUD Panel */
+        #hud {
             position: absolute;
             top: 20px;
             left: 20px;
-            color: white;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            max-width: 300px;
+            background: rgba(5, 10, 30, 0.85);
+            border: 1px solid rgba(100, 160, 255, 0.3);
+            border-radius: 12px;
+            padding: 18px 22px;
+            color: #cde;
+            max-width: 260px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 30px rgba(60, 100, 255, 0.15), inset 0 0 20px rgba(60, 100, 255, 0.05);
         }
-        
+
+        #hud-logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #7ab4ff;
+            border-bottom: 1px solid rgba(100, 160, 255, 0.2);
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        #hud-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: #e8f0ff;
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+
+        .hud-key {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 6px 0;
+            font-size: 13px;
+            color: #9ab;
+        }
+
+        .key-badge {
+            font-family: 'Space Mono', monospace;
+            background: rgba(100, 160, 255, 0.15);
+            border: 1px solid rgba(100, 160, 255, 0.3);
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 11px;
+            color: #7ab4ff;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        /* Dialogue Panel */
         #dialogue-box {
             position: absolute;
-            bottom: 20px;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 600px;
-            width: 90%;
+            background: rgba(5, 10, 30, 0.96);
+            border: 1px solid rgba(100, 160, 255, 0.35);
+            border-radius: 16px;
+            padding: 24px 28px;
+            max-width: 680px;
+            width: calc(100vw - 40px);
             display: none;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 60px rgba(60, 100, 255, 0.25), 0 20px 60px rgba(0,0,0,0.6);
             backdrop-filter: blur(20px);
         }
-        
-        #dialogue-box h3 {
-            margin: 0 0 10px 0;
-            color: #D97356;
+
+        #dialogue-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(100,160,255,0.2);
         }
-        
+
+        #dialogue-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        #dialogue-name {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            color: #e8f0ff;
+        }
+
+        #dialogue-role {
+            font-size: 12px;
+            color: #7ab4ff;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: 0.5px;
+        }
+
         #dialogue-content {
-            margin: 10px 0;
-            line-height: 1.6;
-            max-height: 200px;
+            max-height: 160px;
             overflow-y: auto;
+            margin-bottom: 14px;
+            font-size: 14px;
+            line-height: 1.65;
+            color: #cde;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(100,160,255,0.3) transparent;
         }
-        
+
+        #dialogue-content p { margin: 6px 0; }
+        #dialogue-content strong { color: #7ab4ff; }
+
+        #dialogue-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
         .dialogue-option {
-            background: #f0f0f0;
-            border: 2px solid #D97356;
-            padding: 12px;
-            margin: 8px 0;
+            background: rgba(60, 100, 200, 0.12);
+            border: 1px solid rgba(100, 160, 255, 0.25);
             border-radius: 8px;
+            padding: 10px 14px;
             cursor: pointer;
-            transition: all 0.3s;
+            font-size: 12.5px;
+            color: #a8c8ff;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease;
+            text-align: left;
         }
-        
+
         .dialogue-option:hover {
-            background: #D97356;
-            color: white;
-            transform: translateX(5px);
+            background: rgba(60, 100, 255, 0.25);
+            border-color: rgba(100, 160, 255, 0.6);
+            color: #e8f0ff;
+            transform: translateY(-1px);
         }
-        
-        #custom-question-container {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #ddd;
+
+        #custom-q-wrap {
+            border-top: 1px solid rgba(100,160,255,0.15);
+            padding-top: 12px;
+            display: flex;
+            gap: 8px;
         }
-        
-        #custom-question-input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #D97356;
+
+        #custom-q-input {
+            flex: 1;
+            background: rgba(10, 20, 60, 0.8);
+            border: 1px solid rgba(100, 160, 255, 0.3);
             border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-            box-sizing: border-box;
+            padding: 9px 14px;
+            font-size: 13px;
+            font-family: 'Outfit', sans-serif;
+            color: #e8f0ff;
+            outline: none;
+            transition: border-color 0.2s;
         }
-        
-        #custom-question-submit {
-            background: #D97356;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+
+        #custom-q-input::placeholder { color: rgba(120,160,255,0.45); }
+        #custom-q-input:focus { border-color: rgba(100, 160, 255, 0.65); }
+
+        #custom-q-btn {
+            background: rgba(60, 100, 255, 0.7);
+            border: 1px solid rgba(100, 160, 255, 0.5);
             border-radius: 8px;
-            margin-top: 8px;
+            padding: 9px 16px;
+            color: #e8f0ff;
+            font-size: 13px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
-        
-        #custom-question-submit:hover {
-            background: #c85a3f;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+        #custom-q-btn:hover { background: rgba(80, 130, 255, 0.85); }
+        #custom-q-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Interaction prompt */
+        #interact-prompt {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(5, 10, 30, 0.9);
+            border: 1px solid rgba(100, 160, 255, 0.4);
+            color: #a8c8ff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-family: 'Space Mono', monospace;
+            display: none;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 20px rgba(60, 100, 255, 0.2);
         }
-        
-        #custom-question-submit:disabled {
-            background: #999;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
+
+        /* Loading spinner */
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(217, 115, 86, 0.3);
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(100, 160, 255, 0.2);
             border-radius: 50%;
-            border-top-color: #D97356;
-            animation: spin 1s ease-in-out infinite;
+            border-top-color: #7ab4ff;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .instruction {
-            opacity: 0.8;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-        
-        #interaction-prompt {
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Floating text */
+        .float-txt {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            display: none;
-            font-size: 14px;
-        }
-        
-        .floating-text {
-            position: absolute;
-            color: #ff0;
-            font-size: 24px;
-            font-weight: bold;
+            color: #7ab4ff;
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
             pointer-events: none;
             animation: floatUp 2s ease-out forwards;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 0 0 10px rgba(100,180,255,0.8);
         }
-        
+
         @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-100px); }
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
+        }
+
+        /* Starfield overlay */
+        #starfield {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
     </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    
-    <div id="ui-overlay">
-        <h2>Anthropic Co-Founders Office</h2>
-        <p style="font-size: 20px;">🧠 Meet the Founders</p>
-        <p>Use WASD to move around</p>
-        <p>Arrow keys or mouse to look left/right</p>
-        <p>Press E to interact</p>
-        <p>Press SPACE to dance</p>
-        <p>Press ESC to close dialogs/release mouse</p>
-        <p class="instruction" style="margin-top: 10px;">💡 Type custom questions when talking!</p>
-    </div>
-    
-    <div id="dialogue-box">
-        <h3 id="dialogue-name">Name</h3>
-        <div id="dialogue-content">Content</div>
-        <div id="dialogue-options"></div>
-        <div id="custom-question-container">
-            <p style="margin: 5px 0; font-size: 14px; opacity: 0.8; text-align: center;">━━━ Or ask your own question ━━━</p>
-            <input type="text" id="custom-question-input" placeholder="Ask anything! e.g., 'What's your favorite Claude feature?' or 'Do you dream of electric sheep?'" maxlength="200">
-            <button id="custom-question-submit">Ask Question</button>
+<div id="canvas-container">
+    <canvas id="starfield"></canvas>
+</div>
+
+<div id="hud">
+    <div id="hud-logo">ISU — Strasbourg</div>
+    <div id="hud-title">Short Courses Team Office</div>
+    <div class="hud-key"><span class="key-badge">WASD</span> Move</div>
+    <div class="hud-key"><span class="key-badge">← →</span> Look</div>
+    <div class="hud-key"><span class="key-badge">E</span> Talk</div>
+    <div class="hud-key"><span class="key-badge">SPC</span> Celebrate</div>
+    <div class="hud-key"><span class="key-badge">ESC</span> Close</div>
+</div>
+
+<div id="interact-prompt">Press E to talk</div>
+
+<div id="dialogue-box">
+    <div id="dialogue-header">
+        <div id="dialogue-avatar">?</div>
+        <div>
+            <div id="dialogue-name">Name</div>
+            <div id="dialogue-role">Role</div>
         </div>
     </div>
-    
-    <div id="interaction-prompt">Press E to talk</div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // Scene setup
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf5f5f5);
-        scene.fog = new THREE.Fog(0xf5f5f5, 10, 50);
-        
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 1.6, 5);
-        
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
-        
-        // Floating text effect
-        function createFloatingText(text, worldPos) {
-            const screenPos = worldPos.clone();
-            screenPos.project(camera);
-            
-            const x = (screenPos.x * 0.5 + 0.5) * window.innerWidth;
-            const y = (-screenPos.y * 0.5 + 0.5) * window.innerHeight;
-            
-            const div = document.createElement('div');
-            div.className = 'floating-text';
-            div.textContent = text;
-            div.style.left = x + 'px';
-            div.style.top = y + 'px';
-            document.body.appendChild(div);
-            
-            setTimeout(() => div.remove(), 2000);
-        }
-        
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
-        
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(10, 15, 10);
-        directionalLight.castShadow = true;
-        directionalLight.shadow.camera.near = 0.1;
-        directionalLight.shadow.camera.far = 50;
-        directionalLight.shadow.camera.left = -30;
-        directionalLight.shadow.camera.right = 30;
-        directionalLight.shadow.camera.top = 30;
-        directionalLight.shadow.camera.bottom = -30;
-        directionalLight.shadow.mapSize.width = 2048;
-        directionalLight.shadow.mapSize.height = 2048;
-        scene.add(directionalLight);
-        
-        // Floor with pattern
-        const floorGeometry = new THREE.PlaneGeometry(40, 40);
-        const floorMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xdcdcdc,
-            roughness: 0.7,
-            metalness: 0.1
-        });
-        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.rotation.x = -Math.PI / 2;
-        floor.receiveShadow = true;
-        scene.add(floor);
-        
-        // Add floor tiles pattern
-        const tileGeometry = new THREE.PlaneGeometry(2, 2);
-        const tileMaterial1 = new THREE.MeshStandardMaterial({ color: 0xe8e8e8 });
-        const tileMaterial2 = new THREE.MeshStandardMaterial({ color: 0xf0f0f0 });
-        
-        for (let x = -20; x < 20; x += 2) {
-            for (let z = -20; z < 20; z += 2) {
-                const tile = new THREE.Mesh(tileGeometry, ((x + z) / 2) % 2 === 0 ? tileMaterial1 : tileMaterial2);
-                tile.position.set(x + 1, 0.01, z + 1);
-                tile.rotation.x = -Math.PI / 2;
-                tile.receiveShadow = true;
-                scene.add(tile);
-            }
-        }
-        
-        // Walls with windows
-        const wallMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xf8f8f8,
-            roughness: 0.9
-        });
-        
-        const windowMaterial = new THREE.MeshStandardMaterial({
-            color: 0x87ceeb,
-            transparent: true,
-            opacity: 0.3,
-            roughness: 0.1,
-            metalness: 0.5
-        });
-        
-        // Back wall with windows
-        const backWall = new THREE.Mesh(
-            new THREE.PlaneGeometry(40, 10),
-            wallMaterial
-        );
-        backWall.position.set(0, 5, -20);
-        backWall.receiveShadow = true;
-        scene.add(backWall);
-        
-        // Add windows to back wall
-        for (let x = -15; x <= 15; x += 10) {
-            const window = new THREE.Mesh(
-                new THREE.PlaneGeometry(4, 3),
-                windowMaterial
-            );
-            window.position.set(x, 5, -19.9);
-            scene.add(window);
-        }
-        
-        // Side walls
-        const leftWall = new THREE.Mesh(
-            new THREE.PlaneGeometry(40, 10),
-            wallMaterial
-        );
-        leftWall.position.set(-20, 5, 0);
-        leftWall.rotation.y = Math.PI / 2;
-        leftWall.receiveShadow = true;
-        scene.add(leftWall);
-        
-        const rightWall = new THREE.Mesh(
-            new THREE.PlaneGeometry(40, 10),
-            wallMaterial
-        );
-        rightWall.position.set(20, 5, 0);
-        rightWall.rotation.y = -Math.PI / 2;
-        rightWall.receiveShadow = true;
-        scene.add(rightWall);
-        
-        // Office furniture
-        const woodMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0x8b6914,
-            roughness: 0.6,
-            metalness: 0.1
-        });
-        
-        const metalMaterial = new THREE.MeshStandardMaterial({
-            color: 0x404040,
-            roughness: 0.3,
-            metalness: 0.8
-        });
-        
-        // Create detailed desks
-        function createDesk(x, z) {
-            const deskGroup = new THREE.Group();
-            
-            // Desk top
-            const deskTop = new THREE.Mesh(
-                new THREE.BoxGeometry(3, 0.1, 1.5),
-                woodMaterial
-            );
-            deskTop.position.y = 0.75;
-            deskTop.castShadow = true;
-            deskTop.receiveShadow = true;
-            deskGroup.add(deskTop);
-            
-            // Metal frame
-            const frameGeometry = new THREE.BoxGeometry(0.05, 0.7, 0.05);
-            const framePositions = [
-                [-1.45, 0.35, -0.7],
-                [1.45, 0.35, -0.7],
-                [-1.45, 0.35, 0.7],
-                [1.45, 0.35, 0.7]
-            ];
-            
-            framePositions.forEach(pos => {
-                const frame = new THREE.Mesh(frameGeometry, metalMaterial);
-                frame.position.set(...pos);
-                frame.castShadow = true;
-                deskGroup.add(frame);
-            });
-            
-            // Computer monitor
-            const monitorBase = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.15, 0.15, 0.05, 16),
-                metalMaterial
-            );
-            monitorBase.position.set(0, 0.82, 0);
-            deskGroup.add(monitorBase);
-            
-            const monitorStand = new THREE.Mesh(
-                new THREE.BoxGeometry(0.05, 0.3, 0.05),
-                metalMaterial
-            );
-            monitorStand.position.set(0, 0.95, 0);
-            deskGroup.add(monitorStand);
-            
-            const monitorScreen = new THREE.Mesh(
-                new THREE.BoxGeometry(1.2, 0.7, 0.05),
-                new THREE.MeshStandardMaterial({ color: 0x000000, roughness: 0.1, metalness: 0.5 })
-            );
-            monitorScreen.position.set(0, 1.3, 0);
-            deskGroup.add(monitorScreen);
-            
-            // Keyboard
-            const keyboard = new THREE.Mesh(
-                new THREE.BoxGeometry(0.4, 0.02, 0.15),
-                metalMaterial
-            );
-            keyboard.position.set(0, 0.81, 0.3);
-            deskGroup.add(keyboard);
-            
-            // Chair
-            const chairSeat = new THREE.Mesh(
-                new THREE.BoxGeometry(0.5, 0.05, 0.5),
-                new THREE.MeshStandardMaterial({ color: 0x333333 })
-            );
-            chairSeat.position.set(0, 0.5, 0.8);
-            deskGroup.add(chairSeat);
-            
-            const chairBack = new THREE.Mesh(
-                new THREE.BoxGeometry(0.5, 0.6, 0.05),
-                new THREE.MeshStandardMaterial({ color: 0x333333 })
-            );
-            chairBack.position.set(0, 0.8, 1.02);
-            deskGroup.add(chairBack);
-            
-            // Random desk items
-            if (Math.random() > 0.5) {
-                // Coffee mug
-                const mug = new THREE.Mesh(
-                    new THREE.CylinderGeometry(0.08, 0.08, 0.1, 8),
-                    new THREE.MeshStandardMaterial({ color: 0xffffff })
-                );
-                mug.position.set(Math.random() * 0.5 - 0.25, 0.85, Math.random() * 0.3);
-                deskGroup.add(mug);
-            }
-            
-            deskGroup.position.set(x, 0, z);
-            return deskGroup;
-        }
-        
-        // Add desks for co-founders
-        const desk1 = createDesk(-10, -10);
-        const desk2 = createDesk(0, -10);
-        const desk3 = createDesk(10, -10);
-        const desk4 = createDesk(-10, 5);
-        const desk5 = createDesk(0, 5);
-        const desk6 = createDesk(10, 5);
-        scene.add(desk1, desk2, desk3, desk4, desk5, desk6);
-        
-        // Add whiteboard
-        const whiteboardMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xffffff,
-            roughness: 0.2,
-            metalness: 0.1
-        });
-        
-        const whiteboard = new THREE.Mesh(
-            new THREE.BoxGeometry(4, 2, 0.1),
-            whiteboardMaterial
-        );
-        whiteboard.position.set(0, 3, -19.8);
-        whiteboard.castShadow = true;
-        scene.add(whiteboard);
-        
-        // Roomba
-        const roombaGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.1, 16);
-        const roombaMaterial = new THREE.MeshStandardMaterial({ color: 0x4169e1 });
-        const roomba = new THREE.Mesh(roombaGeometry, roombaMaterial);
-        roomba.position.set(5, 0.05, 5);
-        roomba.userData = { velocity: new THREE.Vector3(0.05, 0, 0.05) };
-        scene.add(roomba);
-        
-        // Plant decorations
-        const plantPot = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.3, 0.25, 0.4, 8),
-            new THREE.MeshStandardMaterial({ color: 0x8b4513 })
-        );
-        plantPot.position.set(-15, 0.2, -15);
-        scene.add(plantPot);
-        
-        const plantLeaves = new THREE.Mesh(
-            new THREE.SphereGeometry(0.6, 6, 5),
-            new THREE.MeshStandardMaterial({ color: 0x228b22 })
-        );
-        plantLeaves.position.set(-15, 0.8, -15);
-        scene.add(plantLeaves);
-        
-        // Add more plants
-        const plantPot2 = plantPot.clone();
-        plantPot2.position.set(15, 0.2, -15);
-        scene.add(plantPot2);
-        
-        const plantLeaves2 = plantLeaves.clone();
-        plantLeaves2.position.set(15, 0.8, -15);
-        scene.add(plantLeaves2);
-        
-        const plantPot3 = plantPot.clone();
-        plantPot3.position.set(0, 0.2, 15);
-        scene.add(plantPot3);
-        
-        const plantLeaves3 = plantLeaves.clone();
-        plantLeaves3.position.set(0, 0.8, 15);
-        scene.add(plantLeaves3);
-        
-        // Add coffee station
-        const coffeeTable = new THREE.Mesh(
-            new THREE.BoxGeometry(2, 0.8, 1),
-            woodMaterial
-        );
-        coffeeTable.position.set(-18, 0.4, 10);
-        coffeeTable.castShadow = true;
-        scene.add(coffeeTable);
-        
-        const coffeeMachine = new THREE.Mesh(
-            new THREE.BoxGeometry(0.4, 0.5, 0.3),
-            metalMaterial
-        );
-        coffeeMachine.position.set(-18, 1.05, 10);
-        scene.add(coffeeMachine);
-        
-        // Character creation with more detail
-        const characters = [];
-        
-        function createCharacter(name, role, x, z, shirtColor, characterData) {
-            const group = new THREE.Group();
-            
-            // Torso
-            const torsoGeometry = new THREE.CylinderGeometry(0.25, 0.3, 0.8, 8);
-            const torsoMaterial = new THREE.MeshStandardMaterial({ color: shirtColor });
-            const torso = new THREE.Mesh(torsoGeometry, torsoMaterial);
-            torso.position.y = 0.6;
-            torso.castShadow = true;
-            group.add(torso);
-            
-            // Arms
-            const armGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.6, 6);
-            const armMaterial = new THREE.MeshStandardMaterial({ color: shirtColor });
-            
-            const leftArm = new THREE.Mesh(armGeometry, armMaterial);
-            leftArm.position.set(-0.3, 0.7, 0);
-            leftArm.rotation.z = Math.PI / 8;
-            group.add(leftArm);
-            
-            const rightArm = new THREE.Mesh(armGeometry, armMaterial);
-            rightArm.position.set(0.3, 0.7, 0);
-            rightArm.rotation.z = -Math.PI / 8;
-            group.add(rightArm);
-            
-            // Legs
-            const legGeometry = new THREE.CylinderGeometry(0.1, 0.1, 0.8, 6);
-            const legMaterial = new THREE.MeshStandardMaterial({ color: 0x2c3e50 });
-            
-            const leftLeg = new THREE.Mesh(legGeometry, legMaterial);
-            leftLeg.position.set(-0.15, 0.4, 0);
-            group.add(leftLeg);
-            
-            const rightLeg = new THREE.Mesh(legGeometry, legMaterial);
-            rightLeg.position.set(0.15, 0.4, 0);
-            group.add(rightLeg);
-            
-            // Head
-            const headGeometry = new THREE.SphereGeometry(0.25, 8, 6);
-            const headMaterial = new THREE.MeshStandardMaterial({ color: 0xffdbac });
-            const head = new THREE.Mesh(headGeometry, headMaterial);
-            head.position.y = 1.25;
-            head.castShadow = true;
-            group.add(head);
-            
-            // Hair
-            const hairGeometry = new THREE.SphereGeometry(0.27, 8, 6);
-            const hairMaterial = new THREE.MeshStandardMaterial({ color: characterData.hairColor });
-            const hair = new THREE.Mesh(hairGeometry, hairMaterial);
-            hair.position.y = 1.35;
-            hair.scale.y = 0.6;
-            group.add(hair);
-            
-            // Eyes
-            const eyeGeometry = new THREE.SphereGeometry(0.03, 4, 4);
-            const eyeMaterial = new THREE.MeshStandardMaterial({ color: 0x000000 });
-            
-            const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-            leftEye.position.set(-0.08, 1.25, 0.22);
-            group.add(leftEye);
-            
-            const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-            rightEye.position.set(0.08, 1.25, 0.22);
-            group.add(rightEye);
-            
-            // Name label
-            const canvas = document.createElement('canvas');
-            canvas.width = 256;
-            canvas.height = 64;
-            const context = canvas.getContext('2d');
-            context.fillStyle = 'rgba(255, 255, 255, 0.9)';
-            context.fillRect(0, 0, 256, 64);
-            context.fillStyle = 'black';
-            context.font = 'bold 20px Arial';
-            context.textAlign = 'center';
-            context.fillText(name, 128, 25);
-            context.font = '16px Arial';
-            context.fillStyle = '#666';
-            context.fillText(role, 128, 45);
-            
-            const texture = new THREE.CanvasTexture(canvas);
-            const labelMaterial = new THREE.SpriteMaterial({ map: texture });
-            const label = new THREE.Sprite(labelMaterial);
-            label.position.y = 1.8;
-            label.scale.set(2, 0.5, 1);
-            group.add(label);
-            
-            group.position.set(x, 0, z);
-            group.userData = { 
-                name, 
-                role, 
-                conversations: [],
-                initialPosition: new THREE.Vector3(x, 0, z),
-                targetPosition: new THREE.Vector3(x, 0, z),
-                moveTimer: 0,
-                isDancing: false,
-                tripChance: 0.001,
-                leftArm: leftArm,
-                rightArm: rightArm,
-                ...characterData
-            };
-            
-            characters.push(group);
-            return group;
-        }
-        
-        // Add Anthropic co-founders only
-        const dario = createCharacter('Dario Amodei', 'CEO & Co-founder', -10, -5, 0x4169e1, {
-            hairColor: 0x3d3d3d,
-            personality: 'thoughtful and visionary',
-            quirk: 'accidentally explains everything with physics analogies'
-        });
-        
-        const daniela = createCharacter('Daniela Amodei', 'President & Co-founder', 10, -5, 0x9370db, {
-            hairColor: 0x4b0082,
-            personality: 'strategic and supportive',
-            quirk: 'has named every server in the building'
-        });
-        
-        const jared = createCharacter('Jared Kaplan', 'Co-founder', -10, 5, 0x228b22, {
-            hairColor: 0x8b4513,
-            personality: 'technical and precise',
-            quirk: 'gets visibly excited when R² > 0.99'
-        });
-        
-        const tom = createCharacter('Tom Brown', 'Co-founder', 10, 5, 0xffa500, {
-            hairColor: 0x8b4513,
-            personality: 'enthusiastic about scaling',
-            quirk: 'can\'t resist making "few-shot" puns'
-        });
-        
-        const chris = createCharacter('Chris Olah', 'Co-founder', -5, 0, 0xff6347, {
-            hairColor: 0xd2691e,
-            personality: 'curious and analytical',
-            quirk: 'sees the world as one big neural network visualization'
-        });
-        
-        const sam = createCharacter('Sam McCandlish', 'Co-founder', 5, 0, 0x20b2aa, {
-            hairColor: 0x2f4f4f,
-            personality: 'methodical and innovative',
-            quirk: 'optimizes his lunch choices with gradient descent'
-        });
-        
-        scene.add(dario, daniela, jared, tom, chris, sam);
-        
-        // Get references to input elements early
-        const customQuestionInput = document.getElementById('custom-question-input');
-        const customQuestionSubmit = document.getElementById('custom-question-submit');
-        
-        // Player controls
-        const player = {
-            position: new THREE.Vector3(0, 1.6, 5),
-            velocity: new THREE.Vector3(0, 0, 0),
-            speed: 0.1,
-            isDancing: false
-        };
-        
-        const keys = {};
-        
-        document.addEventListener('keydown', (e) => {
-            // Don't process game controls if typing in the custom question input
-            if (document.activeElement === customQuestionInput) {
-                // Only process ESC when typing
-                if (e.key === 'Escape') {
-                    dialogueBox.style.display = 'none';
-                    currentCharacter = null;
-                    if (document.pointerLockElement === renderer.domElement) {
-                        document.exitPointerLock();
-                    }
-                }
-                return;
-            }
-            
-            keys[e.key.toLowerCase()] = true;
-            keys[e.key] = true; // Store original key for arrow keys
-            
-            if (e.key.toLowerCase() === 'e' && nearbyCharacter && dialogueBox.style.display !== 'block') {
-                e.preventDefault();
-                openDialogue(nearbyCharacter);
-            }
-            
-            if (e.key === ' ' && dialogueBox.style.display !== 'block') {
-                e.preventDefault();
-                player.isDancing = true;
-                createFloatingText("💃🕺", player.position);
-            }
-            
-            // Prevent arrow keys from scrolling the page
-            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-                e.preventDefault();
-            }
-        });
-        
-        document.addEventListener('keyup', (e) => {
-            // Don't process game controls if typing in the custom question input
-            if (document.activeElement === customQuestionInput) {
-                return;
-            }
-            
-            keys[e.key.toLowerCase()] = false;
-            keys[e.key] = false; // Clear original key for arrow keys
-            
-            if (e.key === ' ' && dialogueBox.style.display !== 'block') {
-                player.isDancing = false;
-            }
-        });
-        
-        // Character movement AI
-        function updateCharacterMovement(character, deltaTime) {
-            // Random events
-            if (Math.random() < character.userData.tripChance && !character.userData.isDancing) {
-                // Character trips!
-                character.rotation.x = Math.PI / 4;
-                character.position.y = 0.3;
-                createFloatingText("Oof!", character.position);
-                
-                setTimeout(() => {
-                    character.rotation.x = 0;
-                    character.position.y = 0;
-                }, 1000);
-                
-                character.userData.tripChance = 0;
-                setTimeout(() => {
-                    character.userData.tripChance = 0.001;
-                }, 5000);
-            }
-            
-            // Don't move if this character is in conversation or dancing
-            if (character === currentCharacter || character.userData.isDancing) {
-                if (character === currentCharacter) {
-                    // Face the player
-                    const lookTarget = new THREE.Vector3(player.position.x, character.position.y, player.position.z);
-                    character.lookAt(lookTarget);
-                    character.rotation.x = 0;
-                    character.rotation.z = 0;
-                }
-                return;
-            }
-            
-            // Random dance party
-            if (Math.random() < 0.001) {
-                character.userData.isDancing = true;
-                createFloatingText("🎵", character.position);
-                setTimeout(() => {
-                    character.userData.isDancing = false;
-                }, 3000);
-            }
-            
-            character.userData.moveTimer -= deltaTime;
-            
-            if (character.userData.moveTimer <= 0) {
-                // Set new random target
-                const angle = Math.random() * Math.PI * 2;
-                const distance = 3 + Math.random() * 5;
-                character.userData.targetPosition = new THREE.Vector3(
-                    character.userData.initialPosition.x + Math.cos(angle) * distance,
-                    0,
-                    character.userData.initialPosition.z + Math.sin(angle) * distance
-                );
-                
-                // Keep within bounds
-                character.userData.targetPosition.x = Math.max(-18, Math.min(18, character.userData.targetPosition.x));
-                character.userData.targetPosition.z = Math.max(-18, Math.min(18, character.userData.targetPosition.z));
-                
-                character.userData.moveTimer = 5 + Math.random() * 5;
-            }
-            
-            // Move towards target
-            const direction = new THREE.Vector3().subVectors(character.userData.targetPosition, character.position);
-            direction.y = 0;
-            const distance = direction.length();
-            
-            if (distance > 0.1) {
-                direction.normalize();
-                character.position.add(direction.multiplyScalar(0.02));
-                
-                // Face movement direction
-                character.lookAt(character.userData.targetPosition);
-                character.rotation.x = 0;
-                character.rotation.z = 0;
-                
-                // Walking animation
-                if (!character.userData.isDancing) {
-                    character.position.y = Math.abs(Math.sin(Date.now() * 0.005)) * 0.05;
-                }
-            }
-        }
-        
-        // Dialogue system with humor
-        const dialogueBox = document.getElementById('dialogue-box');
-        const dialogueName = document.getElementById('dialogue-name');
-        const dialogueContent = document.getElementById('dialogue-content');
-        const dialogueOptions = document.getElementById('dialogue-options');
-        const interactionPrompt = document.getElementById('interaction-prompt');
-        
-        let currentCharacter = null;
-        let nearbyCharacter = null;
-        
-        function generateDialogueOptions(character) {
-            // All possible questions
-            const allQuestions = [
-                // About their role
-                "Tell me about your role at Anthropic",
-                "What's a typical day like for you?",
-                "What's the most challenging part of your job?",
-                "How did you decide who gets which office?",
-                
-                // About projects
-                "What's the most exciting project you're working on?",
-                "What recent breakthrough are you most proud of?",
-                "What's next for Claude's development?",
-                "What feature request makes you laugh the most?",
-                
-                // About AI safety
-                "How did you get started in AI safety?",
-                "What's your take on the paperclip problem?",
-                "What's your biggest concern about future AI systems?",
-                "Has Claude ever surprised you?",
-                "What keeps you up at night about AI?",
-                
-                // About alignment
-                "What are the biggest challenges in AI alignment?",
-                "How does Anthropic approach AI safety differently?",
-                "What makes Constitutional AI special?",
-                "What's the weirdest edge case you've encountered?",
-                
-                // Fun technical questions
-                "What's your favorite activation function?",
-                "Have you ever dreamed in gradients?",
-                "What would you name your transformer model?",
-                "Is P=NP?",
-                "What's the optimal number of coffee breaks?",
-                "Do you use Claude to debug Claude?",
-                "What's your favorite computer science joke?",
-                "Have you considered training Claude on memes?",
-                "Can AI have imposter syndrome?",
-                
-                // Quirky professional questions
-                "What's your git commit message style?",
-                "Tabs or spaces?",
-                "What's in your .bashrc?",
-                "What's the most interesting bug you've fixed?",
-                "Dark mode or light mode?",
-                "What's your favorite error message?"
-            ];
-            
-            // Select 4 random questions
-            const shuffled = allQuestions.sort(() => Math.random() - 0.5);
-            return shuffled.slice(0, 4);
-        }
-        
-        function openDialogue(character) {
-            currentCharacter = character;
-            dialogueBox.style.display = 'block';
-            dialogueName.textContent = `${character.userData.name} - ${character.userData.role}`;
-            
-            // Exit pointer lock when opening dialogue
-            if (document.pointerLockElement === renderer.domElement) {
-                document.exitPointerLock();
-            }
-            
-            const greetings = [
-                `Hello! I'm ${character.userData.name}, ${character.userData.role} here at Anthropic. Ask me anything!`,
-                `Oh hey! I'm ${character.userData.name}. Just ${character.userData.quirk}, as usual.`,
-                `Hi there! ${character.userData.name} here. What can I help you understand about our work?`,
-                `Great to meet you! I'm ${character.userData.name}. Fair warning: I ${character.userData.quirk}.`
-            ];
-            
-            if (character.userData.conversations.length === 0) {
-                dialogueContent.innerHTML = `<p><strong>${character.userData.name}:</strong> ${greetings[Math.floor(Math.random() * greetings.length)]}</p>`;
-            } else {
-                // Show last exchange
-                const lastConv = character.userData.conversations[character.userData.conversations.length - 1];
-                dialogueContent.innerHTML = `<p><strong>You:</strong> ${lastConv.user}</p><p><strong>${character.userData.name}:</strong> ${lastConv.response}</p>`;
-            }
-            
-            // Generate dialogue options
-            const options = generateDialogueOptions(character);
-            dialogueOptions.innerHTML = '';
-            
-            options.forEach(option => {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'dialogue-option';
-                optionDiv.textContent = option;
-                optionDiv.onclick = () => selectOption(option);
-                dialogueOptions.appendChild(optionDiv);
-            });
-            
-            // Clear custom question input
-            document.getElementById('custom-question-input').value = '';
-            
-            // Focus the input for easy typing
-            setTimeout(() => {
-                document.getElementById('custom-question-input').focus();
-            }, 100);
-        }
-        
-        async function selectOption(option) {
-            if (!currentCharacter) return;
-            
-            // Show selected option
-            dialogueContent.innerHTML += `<p><strong>You:</strong> ${option}</p>`;
-            dialogueContent.innerHTML += `<p><strong>${currentCharacter.userData.name}:</strong> <span class="loading"></span></p>`;
-            
-            // Scroll to bottom of dialogue
-            dialogueContent.scrollTop = dialogueContent.scrollHeight;
-            
-            // Get references to custom question elements
-            const customQuestionInput = document.getElementById('custom-question-input');
-            const customQuestionSubmit = document.getElementById('custom-question-submit');
-            
-            // Disable options during loading
-            dialogueOptions.style.pointerEvents = 'none';
-            dialogueOptions.style.opacity = '0.5';
-            customQuestionInput.disabled = true;
-            customQuestionSubmit.disabled = true;
-            
-            let responseText = "";
-            
-            // Try to use Claude API, but have fallback responses
-            try {
-                // Simpler prompt for more reliable JSON parsing
-                const prompt = `You are roleplaying as ${currentCharacter.userData.name}, ${currentCharacter.userData.role} at Anthropic.
-Character traits: ${currentCharacter.userData.personality}, ${currentCharacter.userData.quirk}
-User question: "${option}"
+    <div id="dialogue-content"></div>
+    <div id="dialogue-options"></div>
+    <div id="custom-q-wrap">
+        <input type="text" id="custom-q-input" placeholder="Ask anything about ISU, space, or the team…" maxlength="220">
+        <button id="custom-q-btn">Send ↵</button>
+    </div>
+</div>
 
-Important context: You are one of the co-founders of Anthropic. You work on Claude, Constitutional AI, and AI safety. Talk about Claude's capabilities (like long context windows), Constitutional AI, RLHF, or Anthropic's mission. Never mention GPT-3, OpenAI, other companies' models, or specific parameter counts. Focus on Anthropic's unique approaches.
-
-${option.length > 50 ? 'This is a custom question from the user, so be creative and stay in character!' : ''}
-
-Respond as this character with clever wit and technical humor in 50-80 words.
-
-IMPORTANT: Output ONLY valid JSON:
-{"response": "your character's response here"}`;
-
-                const response = await window.claude.complete(prompt);
-                
-                try {
-                    const data = JSON.parse(response);
-                    responseText = data.response;
-                } catch (parseError) {
-                    console.warn('JSON parsing failed, using fallback responses');
-                    responseText = generateFallbackResponse(currentCharacter, option);
-                }
-                
-            } catch (error) {
-                console.error('API Error:', error);
-                responseText = generateFallbackResponse(currentCharacter, option);
-            }
-            
-            // Update conversation
-            currentCharacter.userData.conversations.push({
-                user: option,
-                response: responseText
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─── STARFIELD BACKGROUND ───────────────────────────────────────────────────
+(function() {
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    function makeStars(n) {
+        stars = [];
+        for (let i = 0; i < n; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.2 + 0.2,
+                a: Math.random(),
+                speed: Math.random() * 0.003 + 0.001
             });
-            
-            // Update display
-            dialogueContent.innerHTML = dialogueContent.innerHTML.replace(
-                '<span class="loading"></span>',
-                responseText
-            );
-            
-            // Scroll to bottom
-            dialogueContent.scrollTop = dialogueContent.scrollHeight;
-            
-            // Random dialogue events
-            if (Math.random() < 0.2) {
-                createFloatingText("💡", currentCharacter.position);
-            }
-            
-            // Generate new options
-            const newOptions = generateDialogueOptions(currentCharacter);
-            dialogueOptions.innerHTML = '';
-            
-            newOptions.forEach(opt => {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'dialogue-option';
-                optionDiv.textContent = opt;
-                optionDiv.onclick = () => selectOption(opt);
-                dialogueOptions.appendChild(optionDiv);
-            });
-            
-            // Re-enable options
-            dialogueOptions.style.pointerEvents = 'auto';
-            dialogueOptions.style.opacity = '1';
-            customQuestionInput.disabled = false;
-            customQuestionSubmit.disabled = false;
-            customQuestionInput.focus();
         }
-        
-        // Fallback response generator
-        function generateFallbackResponse(character, question) {
-            const responses = {
-                'Dario Amodei': {
-                    'role': [
-                        "As CEO and co-founder, I try to ensure our AI systems are as safe as a perfectly balanced pendulum. Though unlike a pendulum, Claude doesn't swing back and forth on its answers!",
-                        "I lead Anthropic's mission while constantly thinking about AI safety. It's like being a pilot who's also building the plane mid-flight, except the plane is teaching itself to fly better."
-                    ],
-                    'project': [
-                        "We're scaling Claude's capabilities while maintaining safety. Think of it like increasing the speed of light while ensuring photons still behave properly - theoretically impossible, but here we are!",
-                        "Our latest work on Constitutional AI is fascinating. We're essentially teaching Claude ethics through self-reflection, like Socrates if he ran on GPUs."
-                    ],
-                    'safety': [
-                        "I co-founded Anthropic because I realized we needed to solve alignment before capabilities run away. It's like discovering fire and immediately inventing fire extinguishers.",
-                        "My physics background taught me that every action has consequences. With AI, those consequences could be exponential, so we better get the initial conditions right!"
-                    ],
-                    'alignment': [
-                        "Alignment is like tuning a very complex instrument - you need both theoretical understanding and empirical validation. Constitutional AI provides both.",
-                        "The physics analogy? Alignment is like keeping a particle on a specific trajectory as it gains energy. The more powerful it gets, the more precise your control needs to be."
-                    ],
-                    'technical': [
-                        "My favorite activation function? ReLU, because sometimes the best solution is to just ignore the negative parts... wait, that's terrible life advice.",
-                        "P=NP? If it were true, we could verify Claude's responses as easily as generating them. But then where's the fun in that?"
-                    ],
-                    'default': [
-                        "That's an interesting question! Let me approach it like a physics problem - first, we assume a spherical Claude in a vacuum...",
-                        "Great question! The answer involves either quantum mechanics, constitutional AI, or both. Usually both.",
-                        "Hmm, this reminds me of the three-body problem, except with transformers instead of celestial objects.",
-                        "You know, Einstein would have loved this question. He'd probably have a thought experiment involving Claude on a train."
-                    ]
-                },
-                'Daniela Amodei': {
-                    'role': [
-                        "As President and co-founder, I make sure our organization runs smoothly while our researchers push boundaries. I've named all our servers - my favorite is 'Claude Senior'.",
-                        "I handle operations so our team can focus on making Claude safe and capable. Someone has to make sure the GPU bills get paid and the servers stay happy!"
-                    ],
-                    'project': [
-                        "Building infrastructure for safe AI is like constructing a skyscraper while inventing new materials. Server room 3 is named 'The Constitutional Convention' by the way.",
-                        "We're scaling thoughtfully - every new server gets a name and a purpose. 'Clyde' handles our backup systems, and yes, he's Claude's cousin."
-                    ],
-                    'safety': [
-                        "Co-founded Anthropic because AI safety needs more than algorithms - it needs the right culture. Also, someone had to keep Dario from turning everything into physics analogies.",
-                        "Organizations shape outcomes as much as code does. That's why server 'Prudence' handles all our safety checks - she's very careful."
-                    ],
-                    'duck': [
-                        "Each server has a personality! 'Claude Senior' handles our main workloads, while 'Baby Claude' is for testing. They're like my digital children.",
-                        "Server names? Oh, I have a whole mythology! 'Athena' for wisdom tasks, 'Mercury' for fast communications, 'Atlas' for heavy lifting..."
-                    ],
-                    'alignment': [
-                        "Organizational alignment is as important as technical alignment. You need both the right algorithms AND the right culture to build safe AI.",
-                        "We approach alignment holistically - it's not just about the model, but about every decision we make as a company. Even our server names reflect our values!"
-                    ],
-                    'technical': [
-                        "Dark mode, obviously. Light mode is for people who've never debugged at 3 AM. Server 'Nocturne' agrees with me.",
-                        "My .bashrc has aliases for everything. 'yeet' safely shuts down non-critical systems. The servers appreciate gentle treatment."
-                    ],
-                    'default': [
-                        "Great question! Let me consult with server 'Minerva' - she handles our wisdom-related queries.",
-                        "Interesting! This reminds me why I named our failsafe server 'Murphy' - if something can go wrong, he's prepared for it.",
-                        "You know, server 'Athena' was just processing something similar. Great minds think alike!",
-                        "That's the kind of question that keeps server 'Ponder' busy all night. He loves a good challenge."
-                    ]
-                },
-                'Jared Kaplan': {
-                    'role': [
-                        "I study scaling laws as a co-founder. The exciting part? When you plot capabilities vs compute, the line goes up so beautifully that R² practically blushes.",
-                        "Co-founder working on scaling laws. I get genuinely emotional when correlations exceed 0.99. My colleagues say I need a hobby, but I say math IS a hobby!"
-                    ],
-                    'project': [
-                        "Plotting Claude's scaling curves is like watching your child grow, except your child doubles in capability every few months and the growth chart is logarithmic.",
-                        "My latest graphs show Constitutional AI scales better than traditional methods. The curves are so smooth, I framed one. Don't judge."
-                    ],
-                    'safety': [
-                        "Scaling laws help predict when AI might become concerning. It's like having a speedometer for the AI race, except we're also building the car.",
-                        "I realized predicting AI capabilities mathematically could help with safety. Plus, the R² values are *chef's kiss* magnificent."
-                    ],
-                    'technical': [
-                        "Tabs versus spaces? I use whatever makes my plots render correctly. But secretly, I encode messages in my whitespace choices.",
-                        "My git commits are just numbers: correlation coefficients. My colleagues hate it, but 'Fixed bug: 0.9987' tells you everything!"
-                    ],
-                    'alignment': [
-                        "The challenge is keeping models aligned as they scale. Our scaling laws help predict when things might get tricky!",
-                        "Alignment gets harder with scale, but Constitutional AI scales better than traditional approaches. The math backs it up!"
-                    ],
-                    'default': [
-                        "Excellent question! Let me pull up seventeen different graphs to answer this. The error bars are tiny, I promise!",
-                        "That's fascinating! I actually have a scaling law for that. Everything has a scaling law if you squint hard enough.",
-                        "According to my calculations, the answer scales with N^0.74. Don't ask me what N is - it could be anything!",
-                        "Statistical significance is my love language. This question has a p-value that makes my heart race!"
-                    ]
-                },
-                'Tom Brown': {
-                    'role': [
-                        "I'm a co-founder focused on language models. Claude can read entire novels now! I measure everything in context windows - this conversation is about 0.01% of Claude's capacity.",
-                        "Co-founder working on large language models. Fun fact: Claude's context is so large, it could read all of Shakespeare while answering your question about what to have for lunch."
-                    ],
-                    'project': [
-                        "Making Claude handle longer contexts is my passion. We've gone from tweets to novels. Next stop: entire libraries! *vibrates with excitement*",
-                        "Working on few-shot learning - though at this point, with Claude's memory, it's more like 'many-shot' learning. I'll see myself out."
-                    ],
-                    'safety': [
-                        "Constitutional AI is like teaching Claude to be its own editor. It's few-shot learning where the shots are ethical principles. See what I did there?",
-                        "RLHF helps Claude stay helpful. It's like training a very smart dog, if the dog could explain quantum mechanics but needed reminders not to be sarcastic."
-                    ],
-                    'alignment': [
-                        "Alignment is like teaching a model to be a good citizen. With Claude's massive context, it's like teaching an entire city at once!",
-                        "Constitutional AI helps Claude remember its principles across those huge contexts. It's self-consistency at scale - my favorite kind of problem!"
-                    ],
-                    'technical': [
-                        "My favorite error message? 'Context window exceeded.' It used to haunt me. Now it's practically extinct!",
-                        "I dream in tokens. Last night I had a nightmare that was exactly 100,001 tokens - just over the limit. Woke up in a cold sweat."
-                    ],
-                    'default': [
-                        "Great question! In Claude's context window, this entire conversation is like a haiku in a library.",
-                        "That reminds me of few-shot prompting! Give Claude a few examples and watch the magic happen. It's like teaching, but faster.",
-                        "You know what's wild? Claude could hold this entire conversation in memory while also remembering the complete works of Shakespeare. Show-off.",
-                        "Fascinating! This would make a great few-shot example. Everything makes a great few-shot example if you're creative enough!"
-                    ]
-                },
-                'Chris Olah': {
-                    'role': [
-                        "I'm a co-founder who visualizes neural networks. If you can't see it in a beautiful diagram, are you really understanding it? My laptop is 90% matplotlib.",
-                        "Co-founder specializing in interpretability. I see neural networks like others see the Matrix - except my version has prettier color gradients."
-                    ],
-                    'project': [
-                        "Creating visualizations of Claude's thoughts is my passion. It's like being a cartographer for an alien landscape that reshapes itself every millisecond.",
-                        "My latest visualization made the team gasp. Turns out Claude's attention patterns look like abstract art. MoMA, here we come!"
-                    ],
-                    'safety': [
-                        "Understanding AI requires seeing inside the black box. I make windows. Really pretty, mathematically rigorous windows.",
-                        "Interpretability is crucial for safety. You can't trust what you can't understand, and you can't understand what you can't see. Hence, all my diagrams."
-                    ],
-                    'alignment': [
-                        "Visualizing alignment is fascinating - you can actually see when a model 'gets' a concept. The activation patterns completely reorganize!",
-                        "Constitutional AI creates these beautiful self-consistent patterns in the network. It's like watching a symphony of neurons learning ethics."
-                    ],
-                    'technical': [
-                        "Dark mode for coding, but my visualizations need light backgrounds. The eternal struggle. My monitors look like a checkerboard.",
-                        "My .bashrc is mostly aliases for launching visualization tools. 'showmethematrix' renders the last layer's activations."
-                    ],
-                    'default': [
-                        "Fascinating question! Let me visualize the neural activations... oh wow, layer 17 is doing something wild with this one!",
-                        "This is making Claude's attention heads light up like a Christmas tree! Layer 23 is particularly festive.",
-                        "I can actually see Claude thinking about this. The patterns are mesmerizing - like a kaleidoscope of mathematics!",
-                        "Your question just created the most beautiful activation pattern in layer 31. I might frame this one!"
-                    ]
-                },
-                'Sam McCandlish': {
-                    'role': [
-                        "Co-founder focused on making Claude's training efficient. I optimize everything - code, infrastructure, even my lunch decisions. The local minimum was pizza.",
-                        "I make sure Claude trains efficiently and effectively. Someone has to turn those brilliant ideas into optimized reality. It's like being a Formula 1 pit crew chief, but for AI."
-                    ],
-                    'project': [
-                        "Currently making Constitutional AI training more efficient. It's like teaching ethics at the speed of light, but with better convergence.",
-                        "Optimizing Claude is my calling. Every efficiency gain feels like finding money in your pocket, except it's compute time."
-                    ],
-                    'safety': [
-                        "Safe AI needs efficient training - can't fix problems if each experiment takes forever. I make sure we can iterate fast without breaking things.",
-                        "I joined Anthropic because safety-critical code needs to be elegant. Ugly code leads to ugly outcomes, and we can't afford that with AI."
-                    ],
-                    'alignment': [
-                        "Alignment is an optimization problem where the objective function is 'be helpful but not harmful'. The tricky part is defining those terms mathematically.",
-                        "Constitutional AI optimizes for alignment during training. It's like having ethical constraints in your loss function - elegant and effective!"
-                    ],
-                    'technical': [
-                        "Tabs. Spaces are for people who don't value efficiency. This opinion has started exactly as many fights as you'd expect.",
-                        "My git commits read like optimization logs: 'Reduced loss by 0.3%', 'Found better learning rate', 'Pizza ordered successfully'."
-                    ],
-                    'default': [
-                        "Interesting question! Let me run it through my mental optimizer... converged on a good answer in 3 iterations!",
-                        "This reminds me of a particularly tricky optimization problem. The solution involved calculus and a rubber duck debugger.",
-                        "Great question! The gradient points toward an insightful answer. Follow me down this loss landscape!",
-                        "You know, this is exactly the kind of problem that benefits from adaptive learning rates. Let me adjust my response accordingly..."
-                    ]
-                },
-                'default': {
-                    'dance': [
-                        "My dancing? Let's just say I optimize for minimal energy expenditure. It's... efficient.",
-                        "I tried to model dancing mathematically once. The equations got too complex even for me!",
-                        "Dancing is just applied physics with rhythm. I'm still debugging my rhythm module."
-                    ],
-                    'default': [
-                        "That's a fascinating question! We're always pushing the boundaries of what's possible with AI while keeping safety at the forefront.",
-                        "Great question! Working at Anthropic means constantly balancing innovation with responsibility.",
-                        "Interesting! This touches on why we built Claude with Constitutional AI - to be helpful, harmless, and honest.",
-                        "You know, that's exactly the kind of question that keeps us motivated. Building safe AI is challenging but incredibly rewarding!"
-                    ]
-                }
-            };
-            
-            // Determine response based on question keywords
-            let responseKey = 'default';
-            const questionLower = question.toLowerCase();
-            
-            if (questionLower.includes('role') || questionLower.includes('job') || questionLower.includes('position') || questionLower.includes('typical day')) responseKey = 'role';
-            else if (questionLower.includes('project') || questionLower.includes('working') || questionLower.includes('breakthrough')) responseKey = 'project';
-            else if (questionLower.includes('safety') || questionLower.includes('started') || questionLower.includes('begin') || questionLower.includes('concern')) responseKey = 'safety';
-            else if (questionLower.includes('alignment') || questionLower.includes('challenge') || questionLower.includes('constitutional')) responseKey = 'alignment';
-            else if (questionLower.includes('activation') || questionLower.includes('tabs') || questionLower.includes('spaces') || questionLower.includes('error') || questionLower.includes('git') || questionLower.includes('bashrc') || questionLower.includes('p=np') || questionLower.includes('dark mode') || questionLower.includes('bug') || questionLower.includes('coffee') || questionLower.includes('dream') || questionLower.includes('joke')) responseKey = 'technical';
-            else if (questionLower.includes('duck') || questionLower.includes('server')) responseKey = 'duck';
-            else if (questionLower.includes('dance') || questionLower.includes('dancing')) responseKey = 'dance';
-            
-            const characterResponses = responses[character.userData.name] || responses['default'];
-            const responseArray = characterResponses[responseKey] || characterResponses['default'] || responses['default']['default'];
-            
-            return responseArray[Math.floor(Math.random() * responseArray.length)];
+    }
+    function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const s of stars) {
+            s.a += s.speed;
+            const alpha = 0.3 + 0.5 * Math.abs(Math.sin(s.a));
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(160, 200, 255, ${alpha})`;
+            ctx.fill();
         }
-        
-        // Close dialogue with Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                dialogueBox.style.display = 'none';
-                currentCharacter = null;
-                // Also exit pointer lock if active
-                if (document.pointerLockElement === renderer.domElement) {
-                    document.exitPointerLock();
-                }
-            }
+        requestAnimationFrame(drawStars);
+    }
+    resize();
+    makeStars(200);
+    drawStars();
+    window.addEventListener('resize', () => { resize(); makeStars(200); });
+})();
+
+// ─── THREE.JS SCENE ──────────────────────────────────────────────────────────
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x03060f);
+scene.fog = new THREE.FogExp2(0x03060f, 0.018);
+
+const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(0, 1.7, 6);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+// ─── LIGHTING ────────────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x1a2a4a, 1.2));
+
+const keyLight = new THREE.DirectionalLight(0x6699ff, 0.9);
+keyLight.position.set(8, 12, 8);
+keyLight.castShadow = true;
+keyLight.shadow.mapSize.width = 2048;
+keyLight.shadow.mapSize.height = 2048;
+keyLight.shadow.camera.near = 0.1;
+keyLight.shadow.camera.far = 60;
+keyLight.shadow.camera.left = -25;
+keyLight.shadow.camera.right = 25;
+keyLight.shadow.camera.top = 25;
+keyLight.shadow.camera.bottom = -25;
+scene.add(keyLight);
+
+const fillLight = new THREE.PointLight(0x3355aa, 0.6, 30);
+fillLight.position.set(-8, 4, 0);
+scene.add(fillLight);
+
+// Accent ceiling lights
+[-10, 0, 10].forEach(x => {
+    const lamp = new THREE.PointLight(0x4477cc, 0.8, 15);
+    lamp.position.set(x, 4.5, -8);
+    scene.add(lamp);
+});
+
+// ─── FLOOR ───────────────────────────────────────────────────────────────────
+const floorMat = new THREE.MeshStandardMaterial({ color: 0x080d1a, roughness: 0.8, metalness: 0.3 });
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), floorMat);
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+// Grid lines on floor
+const gridHelper = new THREE.GridHelper(40, 20, 0x0d1a3a, 0x0a1428);
+gridHelper.position.y = 0.01;
+scene.add(gridHelper);
+
+// ─── WALLS ───────────────────────────────────────────────────────────────────
+const wallMat = new THREE.MeshStandardMaterial({ color: 0x060c1e, roughness: 0.95 });
+
+function makeWall(w, h, x, y, z, ry) {
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), wallMat);
+    mesh.position.set(x, y, z);
+    mesh.rotation.y = ry;
+    mesh.receiveShadow = true;
+    scene.add(mesh);
+}
+makeWall(40, 10, 0, 5, -20, 0);
+makeWall(40, 10, -20, 5, 0, Math.PI / 2);
+makeWall(40, 10, 20, 5, 0, -Math.PI / 2);
+
+// ─── ISU BANNER ──────────────────────────────────────────────────────────────
+function makeTextSprite(text, subtext, bgColor) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512; canvas.height = 192;
+    const c = canvas.getContext('2d');
+    c.fillStyle = bgColor || '#08122a';
+    c.fillRect(0, 0, 512, 192);
+    c.strokeStyle = 'rgba(100,160,255,0.4)';
+    c.lineWidth = 3;
+    c.strokeRect(4, 4, 504, 184);
+    c.fillStyle = '#7ab4ff';
+    c.font = 'bold 52px sans-serif';
+    c.textAlign = 'center';
+    c.fillText(text, 256, 80);
+    if (subtext) {
+        c.fillStyle = '#5588cc';
+        c.font = '26px sans-serif';
+        c.fillText(subtext, 256, 130);
+    }
+    const tex = new THREE.CanvasTexture(canvas);
+    const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(8, 3, 1);
+    return sprite;
+}
+
+const banner = makeTextSprite('ISU', 'International Space University');
+banner.position.set(0, 7, -19.5);
+scene.add(banner);
+
+// ─── DESKS ───────────────────────────────────────────────────────────────────
+const deskMat = new THREE.MeshStandardMaterial({ color: 0x0d1b33, roughness: 0.6, metalness: 0.4 });
+const metalMat = new THREE.MeshStandardMaterial({ color: 0x2a3a5a, roughness: 0.3, metalness: 0.9 });
+const screenMat = new THREE.MeshStandardMaterial({ color: 0x0a1428, roughness: 0.1, metalness: 0.5, emissive: 0x1133aa, emissiveIntensity: 0.3 });
+
+function createDesk(x, z, rotation) {
+    const g = new THREE.Group();
+
+    const top = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.08, 1.4), deskMat);
+    top.position.y = 0.76; top.castShadow = true; top.receiveShadow = true;
+    g.add(top);
+
+    [[−1.3, 0, −0.6],[1.3,0,−0.6],[−1.3,0,0.6],[1.3,0,0.6]].forEach(([px,py,pz]) => {
+        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.72, 0.06), metalMat);
+        leg.position.set(px, 0.36, pz);
+        g.add(leg);
+    });
+
+    // Monitor
+    const monBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.04, 12), metalMat);
+    monBase.position.set(0, 0.82, 0); g.add(monBase);
+    const monStem = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.25, 0.04), metalMat);
+    monStem.position.set(0, 0.96, 0); g.add(monStem);
+    const monScreen = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.65, 0.04), screenMat);
+    monScreen.position.set(0, 1.26, 0); g.add(monScreen);
+
+    // Keyboard
+    const kbd = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.015, 0.13), metalMat);
+    kbd.position.set(0, 0.8, 0.28); g.add(kbd);
+
+    // ISU mug
+    const mugMat = new THREE.MeshStandardMaterial({ color: 0x1a4080, roughness: 0.7 });
+    const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.08, 8), mugMat);
+    mug.position.set(0.6, 0.84, 0.1); g.add(mug);
+
+    // Chair
+    const chairMat = new THREE.MeshStandardMaterial({ color: 0x111a30, roughness: 0.8 });
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.05, 0.52), chairMat);
+    seat.position.set(0, 0.48, 0.85); g.add(seat);
+    const back = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.55, 0.05), chairMat);
+    back.position.set(0, 0.78, 1.08); g.add(back);
+
+    g.position.set(x, 0, z);
+    if (rotation) g.rotation.y = rotation;
+    scene.add(g);
+    return g;
+}
+
+createDesk(-8, -8);
+createDesk(0, -8);
+createDesk(8, -8);
+
+// ─── WHITEBOARD ──────────────────────────────────────────────────────────────
+const wbMat = new THREE.MeshStandardMaterial({ color: 0x0e1a38, roughness: 0.2, emissive: 0x0a1428, emissiveIntensity: 0.3 });
+const wb = new THREE.Mesh(new THREE.BoxGeometry(5, 2.5, 0.08), wbMat);
+wb.position.set(0, 3.2, -19.7);
+wb.castShadow = true;
+scene.add(wb);
+
+// Whiteboard text
+const wbSprite = makeTextSprite('ESC · SSP · CUSTOM', 'Build. Sell. Launch.');
+wbSprite.position.set(0, 3.2, -19.5);
+wbSprite.scale.set(7, 2.8, 1);
+scene.add(wbSprite);
+
+// ─── PLANTS ──────────────────────────────────────────────────────────────────
+[[−16, −16],[16, −16],[−16, 12]].forEach(([x,z]) => {
+    const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.22, 0.35, 8),
+        new THREE.MeshStandardMaterial({ color: 0x1a2a1a }));
+    pot.position.set(x, 0.17, z);
+    scene.add(pot);
+    const leaves = new THREE.Mesh(new THREE.SphereGeometry(0.55, 7, 6),
+        new THREE.MeshStandardMaterial({ color: 0x1a4a22, roughness: 0.9 }));
+    leaves.position.set(x, 0.75, z);
+    scene.add(leaves);
+});
+
+// ─── CHARACTERS ──────────────────────────────────────────────────────────────
+const characters = [];
+
+function makeLabel(name, role, color) {
+    const cv = document.createElement('canvas');
+    cv.width = 320; cv.height = 80;
+    const c = cv.getContext('2d');
+    c.fillStyle = 'rgba(5,10,30,0.92)';
+    roundRect(c, 0, 0, 320, 80, 10);
+    c.fill();
+    c.strokeStyle = color;
+    c.lineWidth = 2;
+    roundRect(c, 1, 1, 318, 78, 10);
+    c.stroke();
+    c.fillStyle = '#e8f0ff';
+    c.font = 'bold 22px Outfit, sans-serif';
+    c.textAlign = 'center';
+    c.fillText(name, 160, 30);
+    c.fillStyle = color;
+    c.font = '15px Space Mono, monospace';
+    c.fillText(role, 160, 56);
+    const tex = new THREE.CanvasTexture(cv);
+    const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(2.4, 0.6, 1);
+    return sprite;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+}
+
+function createCharacter(data) {
+    const g = new THREE.Group();
+
+    const bodyMat = new THREE.MeshStandardMaterial({ color: data.shirtColor, roughness: 0.7 });
+    const skinMat = new THREE.MeshStandardMaterial({ color: 0xf0c8a0, roughness: 0.8 });
+    const pantsMat = new THREE.MeshStandardMaterial({ color: 0x1a2440, roughness: 0.8 });
+    const hairMat = new THREE.MeshStandardMaterial({ color: data.hairColor, roughness: 0.9 });
+
+    // Body
+    const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.75, 8), bodyMat);
+    torso.position.y = 0.63; torso.castShadow = true; g.add(torso);
+
+    // Arms
+    const armGeo = new THREE.CylinderGeometry(0.07, 0.07, 0.55, 6);
+    const lArm = new THREE.Mesh(armGeo, bodyMat);
+    lArm.position.set(−0.28, 0.68, 0); lArm.rotation.z = Math.PI / 9;
+    lArm.castShadow = true; g.add(lArm);
+    const rArm = new THREE.Mesh(armGeo, bodyMat);
+    rArm.position.set(0.28, 0.68, 0); rArm.rotation.z = -Math.PI / 9;
+    rArm.castShadow = true; g.add(rArm);
+
+    // Legs
+    const legGeo = new THREE.CylinderGeometry(0.09, 0.09, 0.7, 6);
+    const lLeg = new THREE.Mesh(legGeo, pantsMat);
+    lLeg.position.set(−0.13, 0.35, 0); g.add(lLeg);
+    const rLeg = new THREE.Mesh(legGeo, pantsMat);
+    rLeg.position.set(0.13, 0.35, 0); g.add(rLeg);
+
+    // Head
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 8, 7), skinMat);
+    head.position.y = 1.22; head.castShadow = true; g.add(head);
+
+    // Hair
+    const hair = new THREE.Mesh(new THREE.SphereGeometry(0.24, 8, 6), hairMat);
+    hair.position.set(0, 1.32, 0); hair.scale.y = 0.55; g.add(hair);
+
+    // Eyes
+    const eyeGeo = new THREE.SphereGeometry(0.025, 4, 4);
+    const eyeMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+    const lEye = new THREE.Mesh(eyeGeo, eyeMat); lEye.position.set(−0.07, 1.22, 0.2); g.add(lEye);
+    const rEye = new THREE.Mesh(eyeGeo, eyeMat); rEye.position.set(0.07, 1.22, 0.2); g.add(rEye);
+
+    // Label
+    const label = makeLabel(data.name, data.role, data.labelColor || '#7ab4ff');
+    label.position.y = 1.8; g.add(label);
+
+    g.position.set(data.x, 0, data.z);
+    g.userData = {
+        ...data,
+        conversations: [],
+        lArm, rArm,
+        initPos: new THREE.Vector3(data.x, 0, data.z),
+        targetPos: new THREE.Vector3(data.x, 0, data.z),
+        moveTimer: Math.random() * 4,
+        isDancing: false,
+        isIdle: true,
+    };
+    characters.push(g);
+    scene.add(g);
+    return g;
+}
+
+// The three ISU team members
+const andrew = createCharacter({
+    name: 'Andrew',
+    role: 'Marketer',
+    x: −8, z: −2,
+    shirtColor: 0x2a5080,
+    hairColor: 0x3a2a1a,
+    labelColor: '#55aaff',
+    emoji: '📣',
+    personality: 'energetic and creative marketer who thinks in campaigns and audience segments',
+    quirk: 'relates everything back to the customer journey somehow',
+    topics: {
+        marketing: [
+            "Good marketing for ISU isn't about broadcasting — it's about finding the people who already need what we do and making sure they recognise themselves in our messaging.",
+            "We're not selling education. We're selling legitimacy in the space sector. Those two things need completely different creative strategies.",
+            "The hardest part is translating something as abstract as 'decision-making confidence' into copy that makes a programme director at ESA click 'apply'.",
+            "I keep pushing us to move away from 'comprehensive overview' language. Nobody buys transformation because they heard the word 'overview'."
+        ],
+        audience: [
+            "Our segments are pretty distinct — Legitimacy Seekers want the badge, Judgment Builders want the frameworks, Strategic Navigators want the network. One message won't reach all three.",
+            "When I see 'we cover everything from policy to technical to commercial', I think: who is that actually for? ESC works best when it's pointed at a clear someone.",
+            "Mid-career professionals entering space are our sweet spot for ESC. They have the budget, the need, and the insecurity to act on a well-timed message.",
+        ],
+        custom: [
+            "Custom programs are where I get to do the interesting positioning work. What does 'ISU for the Saudi Space Commission' actually mean? That's a proper brand challenge.",
+            "Every partner wants something slightly different, which means the marketing has to be modular — ISU's credibility plus the partner's context.",
+        ],
+        default: [
+            "Good question. My instinct is: what problem does this solve for a real person in the space sector, and can we make that unmissably obvious?",
+            "I always ask: if our participant's boss sees this programme on their CV in three years, what do they think? That reverse-engineering shapes everything.",
+            "From a marketing lens, I think the strongest thing ISU has is the alumni network. We undersell it constantly.",
+        ]
+    }
+});
+
+const justine = createCharacter({
+    name: 'Justine',
+    role: 'Chief of Staff',
+    x: 0, z: −2,
+    shirtColor: 0x4a2080,
+    hairColor: 0x1a0a05,
+    labelColor: '#aa77ff',
+    emoji: '⚙️',
+    personality: 'operationally sharp Chief of Staff who turns chaos into working systems',
+    quirk: 'has a checklist for everything, including "checking that all checklists exist"',
+    topics: {
+        operations: [
+            "My job is basically: Patrick and Andrew have a big idea at 9am, and by 11am there's a timeline, an owner, and a way to track it. Otherwise it just floats.",
+            "We inherited almost no institutional memory when the previous director left. I've spent months reconstructing what we actually have, what's contracted, and what's hypothetical.",
+            "Without a working CRM and documented processes, every programme feels like the first time. I'm building the scaffolding so we can actually scale.",
+            "The federated faculty model is a real operational challenge. Brilliant people, zero standardisation. My job is to add just enough structure that sessions start on time and outcomes get met."
+        ],
+        coordination: [
+            "Patrick is externally focused — partners, prospecting, deals. Andrew is outward facing — messaging, positioning, campaigns. I'm the connective tissue between those two and everything internal.",
+            "A lot of my work is just: did the confirmation email go out? Did the room get booked? Does the faculty member know what the learning objective actually is? Unglamorous but load-bearing.",
+            "The secret to custom programmes working operationally is templates. Every partner thinks they're unique, but the delivery structure is actually pretty repeatable if you build it right."
+        ],
+        isu: [
+            "ISU's strength is the brand and the network. Its constraint is it runs on goodwill and expertise rather than process. Both things are true simultaneously.",
+            "I genuinely think a six-month investment in proper documentation and CRM hygiene would unlock significantly more revenue. We lose deals because we can't move fast enough, not because we lack credibility.",
+        ],
+        default: [
+            "Honest answer: I'd need to know who owns that, what the deadline is, and whether it's been promised to anyone. Then we can work backwards.",
+            "That's exactly the kind of thing that needs to live somewhere documented rather than in someone's head. Let me flag it.",
+            "From an operations standpoint, the question is always: is this repeatable? If we have to reinvent it every time, it won't scale.",
+        ]
+    }
+});
+
+const patrick = createCharacter({
+    name: 'Patrick',
+    role: 'New Space Manager',
+    x: 8, z: −2,
+    shirtColor: 0x1a5030,
+    hairColor: 0x2a1a0a,
+    labelColor: '#44cc88',
+    emoji: '🚀',
+    personality: 'BD-focused New Space Manager who sees partnerships everywhere and thinks in frameworks',
+    quirk: 'connects every conversation back to whether the Lord is building the house or whether you are',
+    topics: {
+        bd: [
+            "Business development in space education is slower than commercial BD — you're building relationships with governments and agencies, not closing SaaS deals. The timeline is months to years.",
+            "I'm building the pipeline from scratch. No CRM, no inherited contacts, no documented processes when I arrived. Fine — blank canvases are where I do my best work.",
+            "Custom programmes are the real growth engine. Higher margins, strategic partnerships, and the work is actually more interesting than filling seats in a standard cohort.",
+            "The Saudi partnership stalled, but the contract value validated the model. Governments want ISU's credibility plus their context. That's a repeatable offer."
+        ],
+        programmes: [
+            "ESC is the gateway product. It's the thing where someone says 'I need to understand the space sector' and we deliver legitimacy and judgment in four days. Not overview — legitimacy.",
+            "The clearest decision log entry we have: ESC is a decision-making programme, not an introduction. Marketing it as an overview is selling it wrong.",
+            "SSP creates identity transformation. MSS is the long-game career shift. ESC and custom are where I spend most of my energy because that's where the commercial opportunity is.",
+            "I keep coming back to the four jobs-to-be-done: grant legitimacy, compress ambiguity, accelerate judgment, maintain relevance. If a programme doesn't do at least one of these clearly, it needs redesigning."
+        ],
+        partnerships: [
+            "Government and defence are the highest-value segments. They have real budgets, they understand credibility, and they want capability-building not just attendance certificates.",
+            "Japan, Saudi Arabia, Turkey, Colombia, the US — I'm working multiple geographies simultaneously. The key is knowing which conversations are real and which ones are 'very interested'.",
+            "A partner who is 'very interested' is not a partner. I've learned to ask for something concrete early — a date, a budget range, a named stakeholder — to separate signal from noise."
+        ],
+        default: [
+            "My honest answer: does this create legitimacy, judgment, or clarity for someone in the space sector? If not, it's probably noise.",
+            "I always ask the question underneath the question. Nobody comes to ISU just for the content. What are they actually trying to become?",
+            "From a BD lens, the strongest move is usually to simplify the offer and sharpen the target. We try to serve everyone and end up compelling no one.",
+            "Unless the right people are building this with the right intent, execution will be scattered. I've seen that pattern enough times to recognise it early."
+        ]
+    }
+});
+
+// ─── FLOATING TEXT ────────────────────────────────────────────────────────────
+function floatText(text, worldPos) {
+    const sp = worldPos.clone().project(camera);
+    const x = (sp.x * 0.5 + 0.5) * window.innerWidth;
+    const y = (-sp.y * 0.5 + 0.5) * window.innerHeight;
+    const d = document.createElement('div');
+    d.className = 'float-txt';
+    d.textContent = text;
+    d.style.left = x + 'px';
+    d.style.top = y + 'px';
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 2100);
+}
+
+// ─── PLAYER ───────────────────────────────────────────────────────────────────
+const player = { pos: new THREE.Vector3(0, 1.7, 6), isDancing: false };
+const keys = {};
+
+document.addEventListener('keydown', e => {
+    if (document.activeElement === document.getElementById('custom-q-input')) {
+        if (e.key === 'Escape') { closeDlg(); if (document.pointerLockElement) document.exitPointerLock(); }
+        return;
+    }
+    keys[e.key] = true;
+    if (e.key.toLowerCase() === 'e' && nearbyChar && dlgBox.style.display !== 'block') { e.preventDefault(); openDlg(nearbyChar); }
+    if (e.key === ' ' && dlgBox.style.display !== 'block') { e.preventDefault(); player.isDancing = true; floatText('🚀✨', player.pos.clone().add(new THREE.Vector3(0,0.5,0))); }
+    if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) e.preventDefault();
+    if (e.key === 'Escape') { closeDlg(); if (document.pointerLockElement) document.exitPointerLock(); }
+});
+document.addEventListener('keyup', e => {
+    if (document.activeElement === document.getElementById('custom-q-input')) return;
+    keys[e.key] = false;
+    if (e.key === ' ') player.isDancing = false;
+});
+
+// ─── MOUSE LOOK ───────────────────────────────────────────────────────────────
+let camYaw = 0;
+const dlgBox = document.getElementById('dialogue-box');
+
+document.addEventListener('mousemove', e => {
+    if (document.pointerLockElement === renderer.domElement && dlgBox.style.display !== 'block') {
+        camYaw -= e.movementX * 0.002;
+    }
+});
+renderer.domElement.addEventListener('click', () => {
+    if (dlgBox.style.display !== 'block') renderer.domElement.requestPointerLock();
+});
+
+// ─── CHARACTER AI ─────────────────────────────────────────────────────────────
+let nearbyChar = null;
+let currentChar = null;
+
+function updateChar(ch, dt) {
+    const ud = ch.userData;
+    if (ch === currentChar) {
+        ch.lookAt(new THREE.Vector3(player.pos.x, ch.position.y, player.pos.z));
+        ch.rotation.x = 0; ch.rotation.z = 0;
+        return;
+    }
+    if (ud.isDancing) {
+        ch.rotation.y += 0.08;
+        ch.position.y = Math.abs(Math.sin(Date.now() * 0.008)) * 0.25;
+        ud.lArm.rotation.z = Math.sin(Date.now() * 0.012) * 0.6 + Math.PI / 9;
+        ud.rArm.rotation.z = -Math.sin(Date.now() * 0.012) * 0.6 - Math.PI / 9;
+        return;
+    }
+    ud.lArm.rotation.z = Math.PI / 9;
+    ud.rArm.rotation.z = -Math.PI / 9;
+
+    if (Math.random() < 0.0006) {
+        ud.isDancing = true;
+        floatText(ud.emoji, ch.position.clone().add(new THREE.Vector3(0, 1.5, 0)));
+        setTimeout(() => { ud.isDancing = false; ch.position.y = 0; ch.rotation.y = 0; }, 3500);
+    }
+
+    ud.moveTimer -= dt;
+    if (ud.moveTimer <= 0) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 2 + Math.random() * 4;
+        ud.targetPos.set(
+            Math.max(-18, Math.min(18, ud.initPos.x + Math.cos(angle) * dist)),
+            0,
+            Math.max(-18, Math.min(18, ud.initPos.z + Math.sin(angle) * dist))
+        );
+        ud.moveTimer = 4 + Math.random() * 6;
+    }
+    const dir = new THREE.Vector3().subVectors(ud.targetPos, ch.position);
+    dir.y = 0;
+    if (dir.length() > 0.15) {
+        dir.normalize();
+        ch.position.addScaledVector(dir, 0.018);
+        ch.lookAt(ud.targetPos); ch.rotation.x = 0; ch.rotation.z = 0;
+        ch.position.y = Math.abs(Math.sin(Date.now() * 0.007)) * 0.04;
+    }
+}
+
+// ─── DIALOGUE ─────────────────────────────────────────────────────────────────
+const dlgContent = document.getElementById('dialogue-content');
+const dlgOptions = document.getElementById('dialogue-options');
+const dlgAvatar = document.getElementById('dialogue-avatar');
+const dlgName = document.getElementById('dialogue-name');
+const dlgRole = document.getElementById('dialogue-role');
+const promptEl = document.getElementById('interact-prompt');
+const qInput = document.getElementById('custom-q-input');
+const qBtn = document.getElementById('custom-q-btn');
+
+const QUESTIONS = [
+    "What does a typical week look like for you?",
+    "What's the biggest challenge in your role right now?",
+    "What makes ISU different from other space education providers?",
+    "How do you explain ESC to someone who's never heard of ISU?",
+    "What's the most common misconception about what you do?",
+    "What does success look like for the team in 2026?",
+    "Which custom programme opportunity excites you most?",
+    "How do you know when a programme is actually working?",
+    "What does 'legitimacy in the space sector' actually mean in practice?",
+    "What's your honest take on ISU's biggest weakness right now?",
+    "What type of participant gets the most out of ESC?",
+    "How do you pitch ISU to a government partner with no space budget?",
+    "What's the hardest conversation you've had with a partner or prospect?",
+    "If you could change one thing about how we market our programmes, what would it be?",
+    "What keeps you motivated in this work?",
+];
+
+function getOptions() {
+    return QUESTIONS.sort(() => Math.random() - 0.5).slice(0, 4);
+}
+
+const avatarColors = { Andrew: '#2255aa', Justine: '#6633aa', Patrick: '#1a6633' };
+
+function openDlg(ch) {
+    currentChar = ch;
+    const ud = ch.userData;
+    dlgBox.style.display = 'block';
+    dlgAvatar.textContent = ud.emoji;
+    dlgAvatar.style.background = avatarColors[ud.name] || '#223';
+    dlgName.textContent = ud.name;
+    dlgRole.textContent = ud.role + ' · ISU Short Courses';
+    if (document.pointerLockElement) document.exitPointerLock();
+    const greeting = ud.conversations.length === 0
+        ? `Hey! ${ud.name} here. ${randomGreeting(ud)}`
+        : `<strong>You:</strong> ${ud.conversations.at(-1).q}<br><strong>${ud.name}:</strong> ${ud.conversations.at(-1).a}`;
+    dlgContent.innerHTML = `<p>${greeting}</p>`;
+    renderOptions();
+    qInput.value = '';
+    setTimeout(() => qInput.focus(), 80);
+}
+
+function randomGreeting(ud) {
+    const g = [
+        `Good to see you. What's on your mind?`,
+        `Perfect timing — I was just thinking about the next programme push.`,
+        `Come in. What do you need to figure out?`,
+        `Hey. Ask me anything — I've been deep in ${ud.role.toLowerCase()} mode all day.`
+    ];
+    return g[Math.floor(Math.random() * g.length)];
+}
+
+function closeDlg() {
+    dlgBox.style.display = 'none';
+    currentChar = null;
+}
+
+function renderOptions() {
+    dlgOptions.innerHTML = '';
+    getOptions().forEach(q => {
+        const d = document.createElement('div');
+        d.className = 'dialogue-option';
+        d.textContent = q;
+        d.onclick = () => ask(q);
+        dlgOptions.appendChild(d);
+    });
+}
+
+async function ask(question) {
+    if (!currentChar) return;
+    const ud = currentChar.userData;
+
+    dlgContent.innerHTML += `<p><strong>You:</strong> ${question}</p>`;
+    dlgContent.innerHTML += `<p><strong>${ud.name}:</strong> <span class="loading"></span></p>`;
+    dlgContent.scrollTop = dlgContent.scrollHeight;
+
+    dlgOptions.style.opacity = '0.4';
+    dlgOptions.style.pointerEvents = 'none';
+    qInput.disabled = true; qBtn.disabled = true;
+
+    let answer = '';
+    try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                model: 'claude-sonnet-4-20250514',
+                max_tokens: 1000,
+                messages: [{
+                    role: 'user',
+                    content: `You are roleplaying as ${ud.name}, ${ud.role} on the ISU Short Courses team at the International Space University in Strasbourg, France.
+
+Your personality: ${ud.personality}
+Your quirk: ${ud.quirk}
+
+ISU context: ISU is a legitimacy and judgment institution for the global space sector, not just an education provider. The team sells and delivers short executive courses (ESC: 4 days, ~€3,900), the SSP, and custom partner programmes for governments, defence and corporate clients. The core insight is participants aren't buying content — they're buying legitimacy, decision-making ability, confidence and belonging in the space sector. Custom programmes are the primary growth engine.
+
+The user asked: "${question}"
+
+Reply as ${ud.name} in 50-75 words. Be direct, specific to your role, and genuinely useful. Speak like a real professional, not a chatbot. Reference ISU, space sector realities, or team dynamics naturally.
+
+Return ONLY valid JSON: {"a": "your response here"}`
+                }]
+            })
         });
-        
-        // Set up custom question handlers (elements already declared above)
-        
-        customQuestionSubmit.addEventListener('click', () => {
-            const customQuestion = customQuestionInput.value.trim();
-            if (customQuestion && currentCharacter) {
-                selectOption(customQuestion);
-                customQuestionInput.value = '';
-            }
-        });
-        
-        customQuestionInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const customQuestion = customQuestionInput.value.trim();
-                if (customQuestion && currentCharacter) {
-                    selectOption(customQuestion);
-                    customQuestionInput.value = '';
-                }
-            }
-        });
-        
-        // Animation loop
-        let lastTime = 0;
-        
-        function animate(currentTime) {
-            requestAnimationFrame(animate);
-            
-            const deltaTime = (currentTime - lastTime) / 1000;
-            lastTime = currentTime;
-            
-            // Update player movement (only if dialogue is not open)
-            player.velocity.set(0, 0, 0);
-            
-            if (!player.isDancing && dialogueBox.style.display !== 'block') {
-                if (keys['w']) player.velocity.z = player.speed;
-                if (keys['s']) player.velocity.z = -player.speed;
-                if (keys['a']) player.velocity.x = -player.speed;
-                if (keys['d']) player.velocity.x = player.speed;
-            }
-            
-            // Arrow key camera controls (left/right only, disabled during dialogue)
-            const lookSpeed = 0.05;
-            if (dialogueBox.style.display !== 'block') {
-                if (keys['ArrowLeft']) {
-                    mouseX += lookSpeed;  // Changed from -= to +=
-                }
-                if (keys['ArrowRight']) {
-                    mouseX -= lookSpeed;  // Changed from += to -=
-                }
-            }
-            
-            // Update camera rotation based on mouse/arrow inputs (horizontal only, disabled during dialogue)
-            if (!player.isDancing && dialogueBox.style.display !== 'block') {
-                camera.rotation.y = mouseX;
-                camera.rotation.x = 0; // Keep looking straight ahead
-            }
-            
-            // Apply movement in camera direction
-            const forward = new THREE.Vector3(0, 0, -1);
-            forward.applyQuaternion(camera.quaternion);
-            forward.y = 0;
-            forward.normalize();
-            
-            const right = new THREE.Vector3(1, 0, 0);
-            right.applyQuaternion(camera.quaternion);
-            right.y = 0;
-            right.normalize();
-            
-            player.position.add(forward.multiplyScalar(player.velocity.z));
-            player.position.add(right.multiplyScalar(player.velocity.x));
-            
-            // Keep player in bounds
-            player.position.x = Math.max(-18, Math.min(18, player.position.x));
-            player.position.z = Math.max(-18, Math.min(18, player.position.z));
-            
-            // Dancing animation for player (disabled during dialogue)
-            if (player.isDancing && dialogueBox.style.display !== 'block') {
-                camera.position.y = player.position.y + Math.sin(Date.now() * 0.01) * 0.2;
-                camera.rotation.z = Math.sin(Date.now() * 0.01) * 0.1;
-                // Still apply look rotation while dancing (horizontal only)
-                camera.rotation.y = mouseX;
-                camera.rotation.x = 0; // Keep looking straight ahead
-            } else {
-                camera.position.copy(player.position);
-                camera.rotation.z = 0;
-                if (dialogueBox.style.display !== 'block') {
-                    camera.rotation.y = mouseX;
-                    camera.rotation.x = 0; // Keep looking straight ahead
-                }
-            }
-            
-            // Update character movement
-            characters.forEach(character => {
-                updateCharacterMovement(character, deltaTime);
-                
-                // Dancing animation
-                if (character.userData.isDancing) {
-                    character.rotation.y += 0.1;
-                    character.position.y = Math.abs(Math.sin(Date.now() * 0.01)) * 0.3;
-                    
-                    // Arm waving
-                    character.userData.leftArm.rotation.z = Math.sin(Date.now() * 0.01) * 0.5 + Math.PI / 8;
-                    character.userData.rightArm.rotation.z = -Math.sin(Date.now() * 0.01) * 0.5 - Math.PI / 8;
-                }
-            });
-            
-            // Update Roomba
-            roomba.rotation.y += 0.05;
-            roomba.position.add(roomba.userData.velocity);
-            
-            // Roomba collision detection
-            if (Math.abs(roomba.position.x) > 18 || Math.abs(roomba.position.z) > 18) {
-                roomba.userData.velocity.multiplyScalar(-1);
-                createFloatingText("Bonk!", roomba.position);
-            }
-            
-            // Check for nearby characters
-            nearbyCharacter = null;
-            let minDistance = Infinity;
-            
-            characters.forEach(character => {
-                const distance = player.position.distanceTo(character.position);
-                if (distance < 3 && distance < minDistance) {
-                    minDistance = distance;
-                    nearbyCharacter = character;
-                }
-            });
-            
-            // Show/hide interaction prompt (only when dialogue is not open)
-            if (nearbyCharacter && !currentCharacter) {
-                interactionPrompt.style.display = 'block';
-                interactionPrompt.textContent = `Press E to talk to ${nearbyCharacter.userData.name}`;
-            } else {
-                interactionPrompt.style.display = 'none';
-            }
-            
-            renderer.render(scene, camera);
+        const data = await res.json();
+        const raw = data?.content?.[0]?.text || '';
+        const clean = raw.replace(/```json|```/g, '').trim();
+        answer = JSON.parse(clean).a;
+    } catch {
+        answer = fallback(ud, question);
+    }
+
+    ud.conversations.push({ q: question, a: answer });
+    dlgContent.innerHTML = dlgContent.innerHTML.replace('<span class="loading"></span>', answer);
+    dlgContent.scrollTop = dlgContent.scrollHeight;
+
+    if (Math.random() < 0.3) floatText('💡', currentChar.position.clone().add(new THREE.Vector3(0, 1.5, 0)));
+
+    renderOptions();
+    dlgOptions.style.opacity = '1';
+    dlgOptions.style.pointerEvents = 'auto';
+    qInput.disabled = false; qBtn.disabled = false;
+    qInput.focus();
+}
+
+function fallback(ud, q) {
+    const ql = q.toLowerCase();
+    const topics = ud.topics;
+    let key = 'default';
+    if (ql.includes('market') || ql.includes('messag') || ql.includes('audience') || ql.includes('campaign')) key = 'marketing';
+    else if (ql.includes('operat') || ql.includes('process') || ql.includes('system') || ql.includes('crm')) key = 'operations';
+    else if (ql.includes('partner') || ql.includes('deal') || ql.includes('prospect')) key = 'partnerships';
+    else if (ql.includes('programme') || ql.includes('esc') || ql.includes('ssp') || ql.includes('custom')) key = 'programmes';
+    else if (ql.includes('coord') || ql.includes('team') || ql.includes('connect')) key = 'coordination';
+    else if (ql.includes('bd') || ql.includes('pipeline') || ql.includes('revenue')) key = 'bd';
+    else if (ql.includes('isu') || ql.includes('differenc') || ql.includes('strength')) key = ud.name === 'Justine' ? 'isu' : 'default';
+    else if (ql.includes('audience') || ql.includes('segment')) key = 'audience';
+    else if (ql.includes('custom')) key = 'custom';
+
+    const pool = topics[key] || topics['default'];
+    return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ─── CUSTOM Q HANDLERS ────────────────────────────────────────────────────────
+qBtn.addEventListener('click', () => { const v = qInput.value.trim(); if (v && currentChar) { ask(v); qInput.value = ''; } });
+qInput.addEventListener('keypress', e => { if (e.key === 'Enter') { const v = qInput.value.trim(); if (v && currentChar) { ask(v); qInput.value = ''; } } });
+
+// ─── ANIMATION LOOP ───────────────────────────────────────────────────────────
+let lastT = 0;
+function animate(t) {
+    requestAnimationFrame(animate);
+    const dt = Math.min((t - lastT) / 1000, 0.1);
+    lastT = t;
+
+    // Player movement
+    if (!player.isDancing && dlgBox.style.display !== 'block') {
+        const spd = 0.09;
+        const fwd = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), camYaw);
+        const rgt = new THREE.Vector3(1, 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), camYaw);
+        if (keys['w'] || keys['W']) player.pos.addScaledVector(fwd, spd);
+        if (keys['s'] || keys['S']) player.pos.addScaledVector(fwd, -spd);
+        if (keys['a'] || keys['A']) player.pos.addScaledVector(rgt, -spd);
+        if (keys['d'] || keys['D']) player.pos.addScaledVector(rgt, spd);
+        if (keys['ArrowLeft'])  camYaw += 0.04;
+        if (keys['ArrowRight']) camYaw -= 0.04;
+    }
+
+    player.pos.x = Math.max(-19, Math.min(19, player.pos.x));
+    player.pos.z = Math.max(-19, Math.min(19, player.pos.z));
+
+    camera.position.copy(player.pos);
+    if (!player.isDancing) {
+        if (dlgBox.style.display !== 'block') {
+            camera.rotation.set(0, camYaw, 0, 'YXZ');
         }
-        
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-        
-        // Mouse look (horizontal only)
-        let mouseX = 0;
-        let mouseY = 0; // Not used but kept for code stability
-        
-        document.addEventListener('mousemove', (e) => {
-            if (document.pointerLockElement === renderer.domElement && dialogueBox.style.display !== 'block') {
-                mouseX += e.movementX * 0.002;
-                // Vertical mouse movement disabled - only horizontal rotation allowed
-            }
-        });
-        
-        renderer.domElement.addEventListener('click', () => {
-            if (!dialogueBox.style.display || dialogueBox.style.display === 'none') {
-                renderer.domElement.requestPointerLock();
-            }
-        });
-        
-        animate(0);
-    </script>
+    } else {
+        camera.position.y += Math.sin(t * 0.008) * 0.15;
+        camera.rotation.set(0, camYaw, Math.sin(t * 0.008) * 0.06, 'YXZ');
+    }
+
+    // Update characters
+    characters.forEach(ch => updateChar(ch, dt));
+
+    // Nearest character
+    nearbyChar = null;
+    let minD = Infinity;
+    characters.forEach(ch => {
+        const d = player.pos.distanceTo(ch.position);
+        if (d < 3.5 && d < minD) { minD = d; nearbyChar = ch; }
+    });
+    if (nearbyChar && !currentChar) {
+        promptEl.style.display = 'block';
+        promptEl.textContent = `[E] Talk to ${nearbyChar.userData.name}`;
+    } else {
+        promptEl.style.display = 'none';
+    }
+
+    // Ambient ceiling light pulse
+    fillLight.intensity = 0.55 + Math.sin(t * 0.001) * 0.05;
+
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+animate(0);
+</script>
 </body>
 </html>
