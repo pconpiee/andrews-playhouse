@@ -1,0 +1,11 @@
+@media print {
+  .site-header, .site-footer, .skip-link, .filter-bar, .btn { display: none !important; }
+  body { background: white; color: black; font-size: 11pt; }
+  a { color: black; text-decoration: underline; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }
+  .card, .callout, .scholarship, .lane, .countdown, .prompt {
+    box-shadow: none !important; border: 1px solid #ccc !important; break-inside: avoid;
+  }
+  h1, h2, h3 { color: black; }
+  .src { color: #555; }
+}

@@ -1,0 +1,50 @@
+:root {
+  /* Color — warm cream + deep navy + Ethiopian green accent + gold highlight */
+  --color-bg:        #faf6ee;
+  --color-bg-card:   #ffffff;
+  --color-bg-soft:   #f1ead9;
+  --color-ink:       #1b2540;
+  --color-ink-soft:  #4a5475;
+  --color-ink-mute:  #7a829a;
+  --color-line:      #e3dcc7;
+  --color-accent:    #1f7a4d;        /* Ethiopian green, muted */
+  --color-accent-dk: #155737;
+  --color-gold:      #c89b2a;
+  --color-gold-dk:   #8e6c14;
+  --color-danger:    #b03a3a;
+  --color-success:   #2d7a3c;
+
+  /* Type */
+  --font-display: "Cormorant Garamond", "Georgia", "Times New Roman", serif;
+  --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, "Menlo", monospace;
+
+  --fs-xs:   0.8125rem;   /* 13px */
+  --fs-sm:   0.9375rem;   /* 15px */
+  --fs-base: 1rem;        /* 16px */
+  --fs-md:   1.125rem;    /* 18px */
+  --fs-lg:   1.375rem;    /* 22px */
+  --fs-xl:   1.75rem;     /* 28px */
+  --fs-2xl:  2.25rem;     /* 36px */
+  --fs-3xl:  3rem;        /* 48px */
+
+  /* Space */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+
+  /* Radius + shadow + width */
+  --radius-sm: 4px;
+  --radius:    8px;
+  --radius-lg: 14px;
+  --shadow-1:  0 1px 2px rgba(27,37,64,0.05), 0 1px 3px rgba(27,37,64,0.08);
+  --shadow-2:  0 4px 12px rgba(27,37,64,0.08), 0 2px 4px rgba(27,37,64,0.04);
+
+  --container: 64rem;
+  --container-wide: 76rem;
+}
