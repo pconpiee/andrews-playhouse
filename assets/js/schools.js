@@ -4,6 +4,18 @@
   var state = { tag: 'all', region: 'all' };
   var schoolsData = [];
 
+  // Pick up ?tag=... and ?region=... from the URL so deep-links from the
+  // homepage money-lane buttons land on a pre-filtered grid.
+  (function readQueryParams() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var tag = params.get('tag');
+      var region = params.get('region');
+      if (tag) state.tag = tag;
+      if (region) state.region = region;
+    } catch (e) {}
+  })();
+
   function loadJSON(path) {
     return fetch(rel + path).then(function (r) { return r.json(); });
   }
@@ -53,6 +65,12 @@
   }
 
   function wireFilters() {
+    // Reflect the current state (which may have come from URL query params) into the chips.
+    ['tag', 'region'].forEach(function (group) {
+      document.querySelectorAll('[data-filter-group="' + group + '"]').forEach(function (c) {
+        c.classList.toggle('is-active', c.getAttribute('data-filter') === state[group]);
+      });
+    });
     document.querySelectorAll('[data-filter]').forEach(function (chip) {
       chip.addEventListener('click', function () {
         var group = chip.getAttribute('data-filter-group');
