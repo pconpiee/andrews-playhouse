@@ -2,7 +2,7 @@
   {
     "id": "school-match",
     "title": "Match my profile to schools",
-    "when_to_use": "When you want a personalized shortlist beyond the 25 schools on this site.",
+    "when_to_use": "When you want a personalized shortlist beyond the 30 schools on this site.",
     "prompt": "You are a US college admissions advisor specializing in international applicants to BSN nursing programs.\n\nMy profile:\n- Country: Ethiopia\n- High school: English-medium international school in Addis Ababa, graduating June 2026\n- Target entry term: Fall 2027\n- Faith background: Christian\n- Test scores: [TOEFL: ___ / SAT: ___ / GPA: ___ on a 4.0 scale]\n- Family financial contribution per year (USD): [___]\n- Geographic preferences: open\n- Special interests: [community health / pediatrics / surgical / other ___]\n\nGive me a list of 15 US universities I should consider, organized into three tiers (reach, target, likely) based on my profile. For each, tell me:\n1. The name and city/state\n2. Why it fits (one sentence)\n3. Whether they offer documented financial aid to international undergrads (cite a source URL)\n4. The application deadline for the 2027 entry cycle\n\nBe honest about admit rates. Do not invent statistics — if you are not sure, say so.",
     "tags": ["schools", "shortlist"]
   },
