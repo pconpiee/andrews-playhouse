@@ -1,5 +1,5 @@
 // Sets window.BASE_PATH so we can resolve assets/partials regardless of where the
-// site is mounted (root locally, /andrews-playhouse on GitHub Pages, or anywhere else).
+// site is mounted (root locally, /nursing-roadmap on GitHub Pages, or anywhere else).
 // Strategy: derive the prefix from the current path by stripping the trailing
 // /index.html (or any other .html) and any /schools/foo.html nesting.
 (function () {
@@ -12,7 +12,7 @@
   }
   // strip a trailing slash
   prefix = prefix.replace(/\/$/, '');
-  window.BASE_PATH = prefix; // e.g. "" locally at root, "/andrews-playhouse" on GH Pages
+  window.BASE_PATH = prefix; // e.g. "" locally at root, "/nursing-roadmap" on GH Pages
 
   // Depth: how many "../" we need to climb to reach BASE_PATH.
   // 0 for pages at the root, 1 for pages under /schools/.

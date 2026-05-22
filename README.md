@@ -36,7 +36,7 @@ python3 -m http.server 8000
 
 Auto-deployed to GitHub Pages on every push to the deploy branch via `.github/workflows/pages.yml`.
 
-Final URL: `https://pconpiee.github.io/andrews-playhouse/`
+Final URL: `https://pconpiee.github.io/nursing-roadmap/`
 
 One-time setup (repo Settings → Pages):
 - **Source: GitHub Actions** (not "Deploy from a branch").
