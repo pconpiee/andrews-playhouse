@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scholarships · Nursing in America</title>
+  <meta name="description" content="Curated scholarships for international nursing applicants to US BSN programs, plus the big databases and last-resort loan options." />
+  <link rel="icon" type="image/svg+xml" href="./assets/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/reset.css" />
+  <link rel="stylesheet" href="./assets/css/tokens.css" />
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/print.css" />
+  <script src="./assets/js/path.js"></script>
+  <script src="./assets/js/include.js" defer></script>
+  <script src="./assets/js/scholarships.js" defer></script>
+</head>
+<body data-page="scholarships">
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <div data-include="header"></div>
+
+  <main id="main">
+    <section class="hero container">
+      <span class="kicker">Scholarship Database</span>
+      <h1>The scholarships that actually work for you.</h1>
+      <p class="lede">Most US nursing scholarships are restricted to citizens or permanent residents. The list below is filtered to what's reachable from outside the US — plus the databases and loan options of last resort.</p>
+    </section>
+
+    <section class="container">
+      <div class="card card-accent">
+        <h3 style="margin-top:0;">How scholarships actually work when you're not a US citizen</h3>
+        <ol class="bullets">
+          <li><strong>Federal aid is closed.</strong> FAFSA, Pell Grants, the HRSA Nurse Corps program — all US-citizen-only. Don't waste application energy there.</li>
+          <li><strong>Institutional aid is the biggest lever.</strong> Most international students who pay less than sticker price get it through merit and need-based awards <em>from the university itself</em>. That's why the school list matters more than the scholarship list.</li>
+          <li><strong>Private &amp; foundation scholarships fill gaps.</strong> A handful of foundations (Lettie Pate Whitehead, Rotary, AAUW, MMEG) fund international or women-in-developing-country students. Most are graduate-level — bookmark for after BSN.</li>
+          <li><strong>Loans are last resort.</strong> MPOWER and Prodigy lend to international students without a cosigner, but loans should close a gap, not be the plan.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="container section-tight">
+      <h2>Filters</h2>
+      <div class="filter-bar">
+        <div class="filter-bar__group">
+          <span class="filter-bar__label">Type</span>
+          <div class="cluster">
+            <button class="chip is-active" data-filter-group="tag" data-filter="all">All</button>
+            <button class="chip" data-filter-group="tag" data-filter="intl">Open to international</button>
+            <button class="chip" data-filter-group="tag" data-filter="christian">Christian</button>
+            <button class="chip" data-filter-group="tag" data-filter="africa">Africa-specific</button>
+            <button class="chip" data-filter-group="tag" data-filter="nursing">Nursing-specific</button>
+            <button class="chip" data-filter-group="tag" data-filter="need-blind">Need-blind school</button>
+            <button class="chip" data-filter-group="tag" data-filter="loan">Loans (last resort)</button>
+          </div>
+        </div>
+      </div>
+      <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--sp-3);"><span data-scholarship-count>—</span></p>
+    </section>
+
+    <section class="container section-tight">
+      <div class="stack" data-scholarship-list></div>
+    </section>
+
+    <section class="container section">
+      <h2>The big databases</h2>
+      <p class="lede">Use these to find scholarships beyond the curated list above.</p>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3 style="margin-top:0;">Bold.org</h3>
+          <p style="font-size:var(--fs-sm);">120+ nursing scholarships, filter by international eligibility. Free account.</p>
+          <a href="https://bold.org/scholarships/by-major/nursing-scholarships/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Open Bold ↗</a>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">NurseJournal (intl)</h3>
+          <p style="font-size:var(--fs-sm);">Curated list specifically of nursing scholarships open to international students.</p>
+          <a href="https://nursejournal.org/resources/financial-aid/nursing-scholarships-for-international-students/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Open NurseJournal ↗</a>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">Fastweb</h3>
+          <p style="font-size:var(--fs-sm);">Largest US scholarship database; profile-match to nursing awards.</p>
+          <a href="https://www.fastweb.com/college-scholarships/articles/nursing-scholarships" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Open Fastweb ↗</a>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">Hot Courses Abroad</h3>
+          <p style="font-size:var(--fs-sm);">300+ nursing scholarships for US study; international-student-focused.</p>
+          <a href="https://www.hotcoursesabroad.com/study/international-scholarships/us-usa/qn/nursing/211/qid/h5/scholarship.html" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Open ↗</a>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">AACN</h3>
+          <p style="font-size:var(--fs-sm);">The American Association of Colleges of Nursing maintains a hub of nursing-specific funding.</p>
+          <a href="https://www.aacnnursing.org/students/scholarships-financial-aid" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Open AACN ↗</a>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">Nurses Christian Fellowship</h3>
+          <p style="font-size:var(--fs-sm);">Directory of Christian nursing scholarships and accredited Christian nursing schools.</p>
+          <a href="https://ncf-jcn.org/resources/directory-christian-nursing-schools" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Open NCF ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>

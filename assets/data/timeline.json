@@ -1,0 +1,23 @@
+{
+  "milestones": [
+    { "id": "graduation",        "label": "High-school graduation",                "date": "2026-06-13" },
+    { "id": "toefl-target",      "label": "Target TOEFL iBT test date",            "date": "2026-07-15" },
+    { "id": "common-app-opens",  "label": "Common App 2026–27 opens",          "date": "2026-08-01" },
+    { "id": "us-education-fair", "label": "EducationUSA Fair, Addis Ababa",         "date": "2026-09-19" },
+    { "id": "early-decision",    "label": "Early Decision / Early Action deadlines","date": "2026-11-01" },
+    { "id": "regular-decision",  "label": "Regular Decision deadlines wave",        "date": "2027-01-01" },
+    { "id": "decisions-out",     "label": "Most admissions decisions out by",       "date": "2027-04-01" },
+    { "id": "i20-issued",        "label": "Target: I-20 in hand",                   "date": "2027-05-15" },
+    { "id": "f1-interview",      "label": "F-1 visa interview window opens",        "date": "2027-06-15" }
+  ],
+  "next_actions": [
+    "Email AddisAbaba@EducationUSA.org and book a free advising session",
+    "Register for the next available TOEFL iBT (target a July or August test date)",
+    "Ask 2 teachers (one science, one humanities) for letters of recommendation while school is still in session",
+    "Apply to the EducationUSA Scholars Program (ESP) for the next intake",
+    "Open a Common Application account at commonapp.org and start a school shortlist of 8–12 programs",
+    "Make sure your passport is valid through at least December 2027",
+    "Order an official transcript and an English-medium-instruction letter from your high school",
+    "Open a free Bold.org account and a Fastweb account; set up scholarship alerts"
+  ]
+}

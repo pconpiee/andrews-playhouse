@@ -1,0 +1,72 @@
+[
+  {
+    "id": "school-match",
+    "title": "Match my profile to schools",
+    "when_to_use": "When you want a personalized shortlist beyond the 25 schools on this site.",
+    "prompt": "You are a US college admissions advisor specializing in international applicants to BSN nursing programs.\n\nMy profile:\n- Country: Ethiopia\n- High school: English-medium international school in Addis Ababa, graduating June 2026\n- Target entry term: Fall 2027\n- Faith background: Christian\n- Test scores: [TOEFL: ___ / SAT: ___ / GPA: ___ on a 4.0 scale]\n- Family financial contribution per year (USD): [___]\n- Geographic preferences: open\n- Special interests: [community health / pediatrics / surgical / other ___]\n\nGive me a list of 15 US universities I should consider, organized into three tiers (reach, target, likely) based on my profile. For each, tell me:\n1. The name and city/state\n2. Why it fits (one sentence)\n3. Whether they offer documented financial aid to international undergrads (cite a source URL)\n4. The application deadline for the 2027 entry cycle\n\nBe honest about admit rates. Do not invent statistics — if you are not sure, say so.",
+    "tags": ["schools", "shortlist"]
+  },
+  {
+    "id": "common-app-essay",
+    "title": "Draft a 650-word Common App essay from bullets",
+    "when_to_use": "When you have a story but need help turning bullets into a polished draft.",
+    "prompt": "I'm applying to US nursing programs from an international school in Addis Ababa. Please help me write a 650-word Common App personal statement using these notes.\n\nMy notes:\n- [Paste 5–10 bullet points: a specific moment, what you did, what you felt, what changed]\n\nRequirements:\n- 650 words or fewer\n- First-person, no clichés (\"ever since I was a child\", \"making a difference\", \"changed my perspective\")\n- Start with a concrete scene, not a thesis\n- Show, don't tell — anchor in sensory detail\n- The essay should reveal character, not just achievement\n- Avoid the savior narrative (don't position me as the rescuer of poor children)\n- Match a thoughtful, conversational, slightly literary voice — not a marketing brochure\n\nReturn the draft and then, separately, three honest critiques of it.",
+    "tags": ["essay", "draft"]
+  },
+  {
+    "id": "rewrite-ai-detection",
+    "title": "Rewrite to remove AI-sounding phrasing",
+    "when_to_use": "Before submitting any essay or supplement — to make sure it sounds like you, not a chatbot.",
+    "prompt": "Below is a paragraph from my college essay. Rewrite it so it sounds like a thoughtful 18-year-old wrote it — not a chatbot.\n\nRules:\n- Cut any phrase that is generic or could appear in any essay (e.g. \"profound impact\", \"navigate the complexities\", \"in conclusion\", \"in today's world\")\n- Cut adjectives that don't earn their place\n- Replace abstractions with concrete images\n- Keep sentence length varied (some short, some long)\n- Don't add a thesis if the paragraph doesn't need one\n- Match the voice of someone who reads books for pleasure but doesn't try to sound impressive\n\nMy paragraph:\n[PASTE HERE]\n\nReturn: rewritten paragraph, then a 3-bullet diff of what changed and why.",
+    "tags": ["essay", "polish"]
+  },
+  {
+    "id": "mmi-questions",
+    "title": "Generate 10 MMI questions and score my answers",
+    "when_to_use": "To rehearse for nursing-school multiple-mini interviews.",
+    "prompt": "Act as a Multiple Mini Interview (MMI) evaluator for a BSN nursing program admissions panel.\n\nPart 1: Give me 10 MMI stations. Mix the categories: personal, ethical dilemma, hypothetical patient scenario, policy, and one role-play prompt. Each station should be solvable in 5 minutes.\n\nPart 2: Wait for my answers. After I answer each one, score me 1–10 on (a) structure of reasoning, (b) ethical sensitivity, (c) communication clarity, and tell me one specific thing I should improve.\n\nPart 3: After all 10, give me a single overall coaching note — what is the highest-leverage thing I should practice next.\n\nStart by giving me Question 1.",
+    "tags": ["interview", "MMI", "practice"]
+  },
+  {
+    "id": "admissions-email",
+    "title": "Email an admissions officer professionally",
+    "when_to_use": "When you have a specific question for a school (aid for international students, scholarship eligibility, etc.).",
+    "prompt": "Draft a short, professional email to a US university admissions officer. I am an international applicant from Ethiopia applying for the Fall 2027 BSN entry term.\n\nMy questions:\n- [List 2–3 specific questions]\n\nRequirements:\n- 150 words or fewer\n- Polite, direct, no flattery\n- Single clear ask in the closing line\n- Includes my name, country, intended major, and intended entry term\n- Reads like an adult wrote it\n\nReturn the email plus a one-line subject line.",
+    "tags": ["communication", "admissions"]
+  },
+  {
+    "id": "compare-aid-letters",
+    "title": "Compare two financial aid letters",
+    "when_to_use": "Once admissions letters arrive — to understand what each package actually means.",
+    "prompt": "I have financial aid offers from two US universities. Help me compare them as an international undergraduate nursing applicant.\n\nUniversity A:\n[Paste the full aid letter text]\n\nUniversity B:\n[Paste the full aid letter text]\n\nFor each:\n1. Translate every line into plain English (separate grants vs loans vs work-study vs estimated family contribution)\n2. Compute my true out-of-pocket cost per year (sticker − grants − scholarships)\n3. Flag anything that is renewable vs one-year-only\n4. Flag any condition I might miss (GPA requirements, hours required, etc.)\n5. State which offer is better and by how much, and why\n\nBe blunt. Do not invent numbers — if something isn't in the letter, say \"not stated.\"",
+    "tags": ["finance", "decision"]
+  },
+  {
+    "id": "f1-visa-prep",
+    "title": "Prep for my F-1 visa interview",
+    "when_to_use": "Before your appointment at the US Embassy in Addis Ababa.",
+    "prompt": "I have my F-1 student visa interview at the U.S. Embassy in Addis Ababa next week. I'm going to study nursing in the US, starting Fall 2027.\n\nGenerate the 15 most likely consular officer questions for me, organized into four buckets:\n1. Why this school / this program\n2. How will you pay for it (ties to my I-20 financial documentation)\n3. Ties to Ethiopia — proof you intend to return home\n4. Curveballs (\"why nursing in the US specifically?\")\n\nAfter each question, give me a model answer in 3–5 sentences in a calm, confident, factual voice. Avoid hedging. Avoid memorized-sounding language.\n\nFinally, give me five do-not-say red-flag phrases and what to say instead.",
+    "tags": ["visa", "interview"]
+  },
+  {
+    "id": "translate-eligibility",
+    "title": "Translate scholarship eligibility into plain English",
+    "when_to_use": "When a scholarship's eligibility paragraph is dense legal-speak.",
+    "prompt": "Translate the following scholarship eligibility text into plain English. I am an international undergraduate applicant from Ethiopia.\n\nEligibility text:\n[PASTE HERE]\n\nReturn:\n1. A 3-sentence plain summary\n2. A bulleted list of every concrete requirement\n3. A yes/no answer: am I eligible? (If you can't tell from the text, say what info would let you decide)\n4. If the answer is yes, the single most likely reason my application could fail technical screening\n5. If the answer is no, the closest alternative scholarship to look at",
+    "tags": ["scholarships", "eligibility"]
+  },
+  {
+    "id": "study-plan-toefl-sat",
+    "title": "Build a 6-week TOEFL + SAT study plan",
+    "when_to_use": "Right after high school graduation — to plan the summer.",
+    "prompt": "I graduate from an English-medium international school in Addis Ababa on June 13, 2026, and want to take the TOEFL iBT in mid-July and the SAT in late August.\n\nMy baseline:\n- TOEFL diagnostic score: [___]\n- SAT diagnostic score: [___]\n- Weakest areas: [___]\n- I have ~3 hours/day to study, 6 days/week\n\nBuild a 6-week study plan, week by week, that:\n- Gets me to a TOEFL of 100+ and SAT of 1300+\n- Uses ONLY free resources (Khan Academy, official ETS practice, etc.) — list specific links\n- Includes 2 full-length practice tests per subject\n- Builds in 1 day off per week and a deload week before each test\n\nReturn a calendar in markdown (week | day | activity | time).",
+    "tags": ["testing", "planning"]
+  },
+  {
+    "id": "essay-show-dont-tell",
+    "title": "Rewrite a paragraph using show-don't-tell",
+    "when_to_use": "When a draft paragraph is abstract and you need to make it concrete.",
+    "prompt": "Take the abstract paragraph below and rewrite it so it shows instead of tells. Replace adjectives and feelings with specific actions, sensory details, and dialogue.\n\nRules:\n- No abstract emotion words (passionate, dedicated, compassionate)\n- Anchor in one scene with at least 2 sensory details\n- Length: roughly the same as the original\n- Keep my voice\n\nMy paragraph:\n[PASTE HERE]\n\nReturn the rewrite, then a 2-bullet \"why this works\" note.",
+    "tags": ["essay", "craft"]
+  }
+]

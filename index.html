@@ -5,11 +5,169 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nursing in America — a scholarship & application roadmap</title>
   <meta name="description" content="A clear, sourced roadmap for international students applying to BSN nursing programs in the United States." />
+  <link rel="icon" type="image/svg+xml" href="./assets/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/reset.css" />
+  <link rel="stylesheet" href="./assets/css/tokens.css" />
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/print.css" />
+  <script src="./assets/js/path.js"></script>
+  <script src="./assets/js/include.js" defer></script>
+  <script src="./assets/js/dashboard.js" defer></script>
 </head>
-<body>
-  <main>
-    <h1>Nursing in America</h1>
-    <p>Scaffolding in progress. Full site shipping shortly.</p>
+<body data-page="home">
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <div data-include="header"></div>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero container">
+      <span class="kicker">Roadmap · Fall 2027 BSN cycle</span>
+      <h1>Nursing in America — a scholarship &amp; application roadmap.</h1>
+      <p class="lede">Built for international students from English-medium high schools. Three things this week, ten things this month, a clear map for the next year.</p>
+      <div class="cluster" style="margin-top:var(--sp-5);">
+        <a class="btn btn-primary" href="./application-guide.html">Open the application guide</a>
+        <a class="btn btn-ghost" href="./schools.html">Browse 25 priority schools →</a>
+      </div>
+    </section>
+
+    <!-- Countdown row -->
+    <section class="container section-tight">
+      <h2 style="margin-top:0;">Where we are right now</h2>
+      <div class="countdown-row" data-countdowns="graduation,common-app-opens,us-education-fair"></div>
+    </section>
+
+    <!-- Do these three things -->
+    <section class="container section">
+      <div class="grid grid-2" style="align-items:start;">
+        <div class="card card-accent">
+          <h3 style="margin-top:0;">Do these three things this week</h3>
+          <p class="muted" style="font-size:var(--fs-sm);">Tick them off as you go — they save here in your browser.</p>
+          <ul class="checklist" data-next-actions data-limit="3"></ul>
+          <p style="font-size:var(--fs-sm);margin-top:var(--sp-4);"><a href="./application-guide.html">See the full guide for what comes next →</a></p>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">How to use this site</h3>
+          <ol class="bullets">
+            <li><strong>Start with the Guide</strong> — it tells you what to do this month vs. next month.</li>
+            <li><strong>Pick a shortlist</strong> from the 25 schools, filtered by faith, region, or international aid.</li>
+            <li><strong>Apply for scholarships in parallel</strong> — don't wait for admissions decisions.</li>
+            <li><strong>Use the AI Helpers</strong> for essay drafts, MMI practice, and visa-interview prep.</li>
+          </ol>
+          <p class="muted" style="font-size:var(--fs-sm);margin-bottom:0;">Every claim links to its source. Verify deadlines and amounts on each school's own site before applying.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Money lanes -->
+    <section class="container section">
+      <h2>Four routes to paying for it</h2>
+      <p class="lede">Most US nursing aid is closed to non-citizens. These four lanes are the ones that actually work.</p>
+      <div class="lanes">
+        <div class="lane">
+          <div class="lane__kicker">Lane A · Need-blind elite</div>
+          <h3>Apply to schools that meet 100% of demonstrated need.</h3>
+          <p>Harvard, MIT, Yale, Princeton, Amherst, Bowdoin, Brown, Dartmouth, and Grinnell admit international students <strong>need-blind</strong> and meet full need with grants (no loans). None have a direct BSN, so the path is liberal-arts undergrad → graduate nursing entry program (MEPN/MSN).</p>
+          <p><a href="./schools.html?tag=need-blind" class="btn-ghost">See need-blind schools →</a></p>
+          <p><a class="src" href="https://college.harvard.edu/financial-aid/how-aid-works" target="_blank" rel="noopener">Harvard aid policy</a> &nbsp; <a class="src" href="https://college.brown.edu/financial-aid/international-students" target="_blank" rel="noopener">Brown intl aid</a></p>
+        </div>
+        <div class="lane">
+          <div class="lane__kicker">Lane B · Faith-affiliated direct BSN</div>
+          <h3>Christian universities with documented international aid.</h3>
+          <p>Andrews and Loma Linda (Adventist), Eastern University, John Brown, Liberty, Pacific Union, and Colorado Christian all offer direct-entry BSN programs and routinely award merit aid to international Christian applicants. Costs after aid are often the lowest of any tier.</p>
+          <p><a href="./schools.html?tag=faith-affiliated" class="btn-ghost">See faith-affiliated schools →</a></p>
+          <p><a class="src" href="https://ncf-jcn.org/resources/directory-christian-nursing-schools" target="_blank" rel="noopener">Christian nursing schools directory</a></p>
+        </div>
+        <div class="lane">
+          <div class="lane__kicker">Lane C · Public &amp; private with intl aid</div>
+          <h3>Schools that explicitly fund international undergrads in nursing.</h3>
+          <p>Slippery Rock (PA), UIC, East Tennessee State, USF, Johns Hopkins, and Pitt all have documented institutional aid for international nursing applicants. Aid is rarely full-need but can cover 20–60% of cost.</p>
+          <p><a href="./schools.html?tag=intl-friendly" class="btn-ghost">See intl-friendly schools →</a></p>
+          <p><a class="src" href="https://www.sru.edu/admissions/international" target="_blank" rel="noopener">Slippery Rock intl aid</a> &nbsp; <a class="src" href="https://nursing.uic.edu/students/financial-aid-scholarships/" target="_blank" rel="noopener">UIC nursing aid</a></p>
+        </div>
+        <div class="lane">
+          <div class="lane__kicker">Lane D · ADN-to-BSN cheap path</div>
+          <h3>2-year ADN → license as RN → finish BSN online.</h3>
+          <p>Community-college ADN programs (Alvin CC, Austin CC) charge under $10k/yr. After two years and the NCLEX-RN exam, finish the BSN online (UT Arlington, Dallas College). Total cost: a fraction of a 4-year BSN. Trade-off: slower path, smaller scholarship ceiling, F-1 visa logistics are trickier at community colleges.</p>
+          <p><a href="./schools.html?tag=adn-to-bsn" class="btn-ghost">See ADN-to-BSN path →</a></p>
+          <p><a class="src" href="https://programs.austincc.edu/health-sciences/nursing-rn-to-bsn/" target="_blank" rel="noopener">Austin CC RN-to-BSN</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Priority shortlist -->
+    <section class="container section">
+      <h2>Priority shortlist</h2>
+      <p class="lede">The eight schools most worth your time first — chosen because they combine direct-entry BSN, documented international aid, and (where relevant) a strong faith community.</p>
+      <div class="grid grid-2" data-priority-shortlist></div>
+      <p style="margin-top:var(--sp-5);"><a href="./schools.html">See all 25 schools with filters →</a></p>
+    </section>
+
+    <!-- Things people miss -->
+    <section class="container section">
+      <h2>Things people miss</h2>
+      <p class="lede">Four facts that change the strategy. None of them are obvious from a quick read.</p>
+      <div class="grid grid-2">
+        <div class="callout callout--warn">
+          <h4>Nursing is not on the STEM-OPT list.</h4>
+          <p>After graduation, F-1 students get 12 months of Optional Practical Training (OPT) — but nursing degrees do not qualify for the 24-month STEM extension. Plan post-grad work and visa transitions accordingly. <a class="src" href="https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-extension-for-stem-students-stem-opt" target="_blank" rel="noopener">USCIS STEM OPT</a></p>
+        </div>
+        <div class="callout callout--info">
+          <h4>F-1 visa needs proof of full funding upfront.</h4>
+          <p>Before a school issues the I-20 you need for the visa, you must document that you can pay the school <em>and</em> living costs. Scholarship letters, family bank statements, and sponsor affidavits all count. <a class="src" href="https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/students-and-employment" target="_blank" rel="noopener">USCIS F-1 student</a></p>
+        </div>
+        <div class="callout">
+          <h4>TOEFL is often waived for English-medium high-school graduates.</h4>
+          <p>Most US universities waive TOEFL for students whose secondary instruction was in English. Ask each school's international admissions office; if they waive it, you save ~$200 and a test prep cycle. Get a signed English-medium letter from the school before graduation.</p>
+        </div>
+        <div class="callout">
+          <h4>You must pass NCLEX-RN to practice as a nurse in the US.</h4>
+          <p>Graduating from a US-accredited BSN program qualifies you to sit the NCLEX-RN — the national licensure exam — in any state. Foreign-trained nurses also need CGFNS certification, but a US-earned BSN skips that step. <a class="src" href="https://www.ncsbn.org/exams/nclex/about-nclex.page" target="_blank" rel="noopener">NCSBN</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Help me navigate -->
+    <section class="container section">
+      <h2>Where to go from here</h2>
+      <div class="grid grid-3">
+        <a class="card" href="./schools.html" style="text-decoration:none;color:inherit;">
+          <h3 style="margin-top:0;">Schools</h3>
+          <p style="font-size:var(--fs-sm);">25 curated BSN programs filtered by faith, region, and international aid.</p>
+          <span class="btn-ghost">Browse schools →</span>
+        </a>
+        <a class="card" href="./scholarships.html" style="text-decoration:none;color:inherit;">
+          <h3 style="margin-top:0;">Scholarships</h3>
+          <p style="font-size:var(--fs-sm);">30+ funding sources, filtered by international eligibility and faith.</p>
+          <span class="btn-ghost">Browse scholarships →</span>
+        </a>
+        <a class="card" href="./application-guide.html" style="text-decoration:none;color:inherit;">
+          <h3 style="margin-top:0;">Application Guide</h3>
+          <p style="font-size:var(--fs-sm);">Phase-by-phase checklist from May 2026 through your first day on campus.</p>
+          <span class="btn-ghost">Open guide →</span>
+        </a>
+        <a class="card" href="./essays.html" style="text-decoration:none;color:inherit;">
+          <h3 style="margin-top:0;">Essays</h3>
+          <p style="font-size:var(--fs-sm);">Personal-statement structure, prompts, and anti-patterns.</p>
+          <span class="btn-ghost">Read cheat sheet →</span>
+        </a>
+        <a class="card" href="./interview-prep.html" style="text-decoration:none;color:inherit;">
+          <h3 style="margin-top:0;">Interview Prep</h3>
+          <p style="font-size:var(--fs-sm);">Traditional interviews and the Multiple Mini Interview (MMI) format.</p>
+          <span class="btn-ghost">Practice →</span>
+        </a>
+        <a class="card" href="./ai-helpers.html" style="text-decoration:none;color:inherit;">
+          <h3 style="margin-top:0;">AI Helpers</h3>
+          <p style="font-size:var(--fs-sm);">Copy-paste prompts for Claude / ChatGPT — essays, MMI, aid letters, visa prep.</p>
+          <span class="btn-ghost">Get prompts →</span>
+        </a>
+      </div>
+    </section>
   </main>
+
+  <div data-include="footer"></div>
 </body>
 </html>

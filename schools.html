@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Schools · Nursing in America</title>
+  <meta name="description" content="25 curated US nursing schools, filterable by faith affiliation, region, and international-aid friendliness." />
+  <link rel="icon" type="image/svg+xml" href="./assets/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/reset.css" />
+  <link rel="stylesheet" href="./assets/css/tokens.css" />
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/print.css" />
+  <script src="./assets/js/path.js"></script>
+  <script src="./assets/js/include.js" defer></script>
+  <script src="./assets/js/schools.js" defer></script>
+</head>
+<body data-page="schools">
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <div data-include="header"></div>
+
+  <main id="main">
+    <section class="hero container">
+      <span class="kicker">School Explorer</span>
+      <h1>25 nursing schools, hand-picked.</h1>
+      <p class="lede">Not all 700 US BSN programs. These 25 are chosen for international Christian applicants targeting Fall 2027 — across faith-affiliated, public, private, need-blind, and ADN-to-BSN paths.</p>
+    </section>
+
+    <section class="container">
+      <div class="filter-bar">
+        <div class="filter-bar__group">
+          <span class="filter-bar__label">Type</span>
+          <div class="cluster">
+            <button class="chip is-active" data-filter-group="tag" data-filter="all">All</button>
+            <button class="chip" data-filter-group="tag" data-filter="faith-affiliated">Faith-affiliated</button>
+            <button class="chip" data-filter-group="tag" data-filter="public">Public</button>
+            <button class="chip" data-filter-group="tag" data-filter="need-blind">Need-blind elite</button>
+            <button class="chip" data-filter-group="tag" data-filter="adn-to-bsn">ADN-to-BSN path</button>
+            <button class="chip" data-filter-group="tag" data-filter="intl-friendly">Documented intl aid</button>
+            <button class="chip" data-filter-group="tag" data-filter="priority">Priority pick</button>
+          </div>
+        </div>
+        <div class="filter-bar__group">
+          <span class="filter-bar__label">Region</span>
+          <div class="cluster">
+            <button class="chip is-active" data-filter-group="region" data-filter="all">All</button>
+            <button class="chip" data-filter-group="region" data-filter="Northeast">Northeast</button>
+            <button class="chip" data-filter-group="region" data-filter="Southeast">Southeast</button>
+            <button class="chip" data-filter-group="region" data-filter="South">South</button>
+            <button class="chip" data-filter-group="region" data-filter="Midwest">Midwest</button>
+            <button class="chip" data-filter-group="region" data-filter="West">West</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top:var(--sp-4);font-size:var(--fs-sm);">
+        <span data-school-count>—</span> · International aid score is 1 (very limited) to 5 (need-blind or all-students aid).
+      </p>
+
+      <div class="grid grid-2" data-school-grid style="margin-top:var(--sp-4);"></div>
+
+      <div class="callout callout--info" style="margin-top:var(--sp-7);">
+        <h4>How to use this list</h4>
+        <p>Pick 8–12 to apply to: 2–3 reach schools (need-blind elite), 4–6 target schools (faith-affiliated direct BSN + intl-aid publics), and 2–3 likely / safety schools (ADN-to-BSN or generous merit aid). Read the priority profiles first — they have the deepest research.</p>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>
