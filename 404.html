@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="./assets/img/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/reset.css" />
   <link rel="stylesheet" href="./assets/css/tokens.css" />
   <link rel="stylesheet" href="./assets/css/base.css" />
@@ -18,16 +18,54 @@
 <body data-page="404">
   <div data-include="header"></div>
   <main>
-    <section class="hero container center">
+    <section class="hero container">
       <span class="kicker">404</span>
-      <h1 style="margin-left:auto;margin-right:auto;">This page wandered off.</h1>
-      <p class="lede" style="margin-left:auto;margin-right:auto;">Try the homepage, or one of the main sections.</p>
-      <div class="cluster" style="justify-content:center;margin-top:var(--sp-5);">
-        <a class="btn btn-primary" href="./index.html">Home</a>
-        <a class="btn btn-secondary" href="./schools.html">Schools</a>
-        <a class="btn btn-secondary" href="./scholarships.html">Scholarships</a>
-        <a class="btn btn-secondary" href="./application-guide.html">Guide</a>
+      <h1>This page wandered off.</h1>
+      <p class="lede">Probably a school detail page that isn't published yet, or a typo in a URL. The eight schools with full profiles are below.</p>
+    </section>
+
+    <section class="container section">
+      <h2>The eight schools with full detail pages</h2>
+      <div class="grid grid-2">
+        <a class="card card--link" href="./schools/andrews-university.html">
+          <h3 style="margin-top:0;">Andrews University</h3>
+          <p style="font-size:var(--fs-sm);margin:0;">Berrien Springs, MI · Seventh-day Adventist</p>
+        </a>
+        <a class="card card--link" href="./schools/loma-linda.html">
+          <h3 style="margin-top:0;">Loma Linda University</h3>
+          <p style="font-size:var(--fs-sm);margin:0;">Loma Linda, CA · Seventh-day Adventist</p>
+        </a>
+        <a class="card card--link" href="./schools/eastern-university.html">
+          <h3 style="margin-top:0;">Eastern University</h3>
+          <p style="font-size:var(--fs-sm);margin:0;">St. Davids (Philadelphia), PA · Christian</p>
+        </a>
+        <a class="card card--link" href="./schools/john-brown.html">
+          <h3 style="margin-top:0;">John Brown University</h3>
+          <p style="font-size:var(--fs-sm);margin:0;">Siloam Springs, AR · Interdenominational Christian</p>
+        </a>
+        <a class="card card--link" href="./schools/slippery-rock.html">
+          <h3 style="margin-top:0;">Slippery Rock University</h3>
+          <p style="font-size:var(--fs-sm);margin:0;">Slippery Rock, PA · Public</p>
+        </a>
+        <a class="card card--link" href="./schools/etsu.html">
+          <h3 style="margin-top:0;">East Tennessee State University</h3>
+          <p style="font-size:var(--fs-sm);margin:0;">Johnson City, TN · Public</p>
+        </a>
+        <a class="card card--link" href="./schools/uic.html">
+          <h3 style="margin-top:0;">University of Illinois Chicago</h3>
+          <p style="font-size:var(--fs-sm);margin:0;">Chicago, IL · Public</p>
+        </a>
+        <a class="card card--link" href="./schools/johns-hopkins.html">
+          <h3 style="margin-top:0;">Johns Hopkins University</h3>
+          <p style="font-size:var(--fs-sm);margin:0;">Baltimore, MD · Private (reach)</p>
+        </a>
       </div>
+    </section>
+
+    <section class="container section center">
+      <a class="btn btn-primary" href="./index.html">Home</a>
+      <a class="btn btn-secondary" href="./schools.html">Browse all 30 schools</a>
+      <a class="btn btn-secondary" href="./application-guide.html">Application guide</a>
     </section>
   </main>
   <div data-include="footer"></div>
