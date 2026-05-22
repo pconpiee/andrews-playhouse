@@ -18,6 +18,23 @@
     if (link) link.classList.add('is-active');
   }
 
+  function wireHamburger(root) {
+    var btn = root.querySelector('.site-header__toggle');
+    var nav = root.querySelector('#primary-nav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', function () {
+      var open = nav.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // Close when a nav link is tapped (mobile)
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
   function loadInto(el, name) {
     var url = (window.RELATIVE_TO_ROOT || './') + 'assets/partials/' + name + '.html';
     return fetch(url)
@@ -25,7 +42,10 @@
       .then(function (html) {
         el.innerHTML = html;
         rewriteLinks(el);
-        if (name === 'header') highlightActiveNav(el);
+        if (name === 'header') {
+          highlightActiveNav(el);
+          wireHamburger(el);
+        }
       })
       .catch(function () { /* silent — site still renders without nav */ });
   }

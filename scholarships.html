@@ -44,24 +44,24 @@
     <section class="container section-tight">
       <h2>Filters</h2>
       <div class="filter-bar">
-        <div class="filter-bar__group">
-          <span class="filter-bar__label">Type</span>
+        <div class="filter-bar__group" role="group" aria-labelledby="filter-type-label">
+          <span class="filter-bar__label" id="filter-type-label">Type</span>
           <div class="cluster">
-            <button class="chip is-active" data-filter-group="tag" data-filter="all">All</button>
-            <button class="chip" data-filter-group="tag" data-filter="intl">Open to international</button>
-            <button class="chip" data-filter-group="tag" data-filter="christian">Christian</button>
-            <button class="chip" data-filter-group="tag" data-filter="africa">Africa-specific</button>
-            <button class="chip" data-filter-group="tag" data-filter="nursing">Nursing-specific</button>
-            <button class="chip" data-filter-group="tag" data-filter="need-blind">Need-blind school</button>
-            <button class="chip" data-filter-group="tag" data-filter="institutional">Institutional aid</button>
+            <button class="chip is-active" type="button" aria-pressed="true" data-filter-group="tag" data-filter="all">All</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="intl">Open to international</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="christian">Christian</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="africa">Africa-specific</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="nursing">Nursing-specific</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="need-blind">Need-blind school</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="institutional">Institutional aid</button>
           </div>
         </div>
       </div>
-      <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--sp-3);"><span data-scholarship-count>—</span></p>
+      <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--sp-3);" aria-live="polite"><span data-scholarship-count>—</span></p>
     </section>
 
     <section class="container section-tight">
-      <div class="stack" data-scholarship-list></div>
+      <div class="stack" data-scholarship-list aria-busy="true" aria-live="polite"></div>
     </section>
 
     <section class="container section">

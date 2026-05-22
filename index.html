@@ -37,7 +37,23 @@
     <!-- Countdown row -->
     <section class="container section-tight">
       <h2 style="margin-top:0;">Where we are right now</h2>
-      <div class="countdown-row" data-countdowns="graduation,common-app-opens,us-education-fair"></div>
+      <div class="countdown-row" data-countdowns="graduation,common-app-opens,us-education-fair" aria-live="polite">
+        <div class="countdown">
+          <div class="countdown__days">—</div>
+          <div class="countdown__label">High-school graduation</div>
+          <div class="countdown__date">Jun 13, 2026</div>
+        </div>
+        <div class="countdown">
+          <div class="countdown__days">—</div>
+          <div class="countdown__label">Common App 2026–27 opens</div>
+          <div class="countdown__date">Aug 1, 2026</div>
+        </div>
+        <div class="countdown">
+          <div class="countdown__days">—</div>
+          <div class="countdown__label">EducationUSA Fair, Addis Ababa</div>
+          <div class="countdown__date">Sep 19, 2026</div>
+        </div>
+      </div>
     </section>
 
     <!-- Do these three things -->
@@ -98,11 +114,76 @@
       </div>
     </section>
 
-    <!-- Priority shortlist -->
+    <!-- Priority shortlist (pre-rendered static so it shows before JS loads) -->
     <section class="container section">
       <h2>Priority shortlist</h2>
       <p class="lede">The eight schools most worth your time first — chosen because they combine direct-entry BSN, documented international aid, and (where relevant) a strong faith community.</p>
-      <div class="grid grid-2" data-priority-shortlist></div>
+      <div class="grid grid-2">
+        <a class="card school-card" href="./schools/andrews-university.html" style="text-decoration:none;color:inherit;">
+          <div class="school-card__row"><h3>Andrews University</h3>
+            <div class="school-card__score" title="Intl aid friendliness 4/5"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+          </div>
+          <div class="school-card__meta">Berrien Springs, MI · Seventh-day Adventist</div>
+          <p style="font-size:var(--fs-sm);margin:0;">Small Adventist college town in rural Michigan; Sabbath-observant campus, large intl community, structured aid for non-citizens.</p>
+          <div class="card__footer"><span class="muted">~$38k sticker · </span><span>Details →</span></div>
+        </a>
+        <a class="card school-card" href="./schools/loma-linda.html" style="text-decoration:none;color:inherit;">
+          <div class="school-card__row"><h3>Loma Linda University</h3>
+            <div class="school-card__score" title="Intl aid friendliness 3/5"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+          </div>
+          <div class="school-card__meta">Loma Linda, CA · Seventh-day Adventist</div>
+          <p style="font-size:var(--fs-sm);margin:0;">Health-sciences university built around the Loma Linda hospital system in Southern California; direct pipeline to Adventist Health employers.</p>
+          <div class="card__footer"><span class="muted">~$42k sticker · </span><span>Details →</span></div>
+        </a>
+        <a class="card school-card" href="./schools/eastern-university.html" style="text-decoration:none;color:inherit;">
+          <div class="school-card__row"><h3>Eastern University</h3>
+            <div class="school-card__score" title="Intl aid friendliness 3/5"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+          </div>
+          <div class="school-card__meta">St. Davids (Philadelphia suburbs), PA · Christian</div>
+          <p style="font-size:var(--fs-sm);margin:0;">Christ-centered suburban campus 30 min from downtown Philadelphia; clinical access to one of the largest US hospital systems.</p>
+          <div class="card__footer"><span class="muted">~$39k sticker · </span><span>Details →</span></div>
+        </a>
+        <a class="card school-card" href="./schools/john-brown.html" style="text-decoration:none;color:inherit;">
+          <div class="school-card__row"><h3>John Brown University</h3>
+            <div class="school-card__score" title="Intl aid friendliness 4/5"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+          </div>
+          <div class="school-card__meta">Siloam Springs, AR · Interdenominational Christian</div>
+          <p style="font-size:var(--fs-sm);margin:0;">Affordable interdenominational Christian college in the Ozarks; ~96% NCLEX pass rate; substantial merit aid for international Christian students.</p>
+          <div class="card__footer"><span class="muted">~$30k sticker · </span><span>Details →</span></div>
+        </a>
+        <a class="card school-card" href="./schools/slippery-rock.html" style="text-decoration:none;color:inherit;">
+          <div class="school-card__row"><h3>Slippery Rock University</h3>
+            <div class="school-card__score" title="Intl aid friendliness 4/5"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+          </div>
+          <div class="school-card__meta">Slippery Rock, PA · Public</div>
+          <p style="font-size:var(--fs-sm);margin:0;">Public university with an automatic ~$5,000 international scholarship; affordable sticker, Pittsburgh hospital pipeline.</p>
+          <div class="card__footer"><span class="muted">~$28k sticker · </span><span>Details →</span></div>
+        </a>
+        <a class="card school-card" href="./schools/etsu.html" style="text-decoration:none;color:inherit;">
+          <div class="school-card__row"><h3>East Tennessee State University</h3>
+            <div class="school-card__score" title="Intl aid friendliness 4/5"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+          </div>
+          <div class="school-card__meta">Johnson City, TN · Public</div>
+          <p style="font-size:var(--fs-sm);margin:0;">Mid-sized college town in the Appalachian foothills; mild climate, low cost of living, intl scholarships for F-1/J-1 with 3.0+ GPA.</p>
+          <div class="card__footer"><span class="muted">~$26k sticker · </span><span>Details →</span></div>
+        </a>
+        <a class="card school-card" href="./schools/uic.html" style="text-decoration:none;color:inherit;">
+          <div class="school-card__row"><h3>University of Illinois Chicago</h3>
+            <div class="school-card__score" title="Intl aid friendliness 4/5"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+          </div>
+          <div class="school-card__meta">Chicago, IL · Public research university</div>
+          <p style="font-size:var(--fs-sm);margin:0;">Top-ranked public BSN in the middle of Chicago; College of Nursing scholarships for current intl students with 3.5+ GPA.</p>
+          <div class="card__footer"><span class="muted">~$50k sticker · </span><span>Details →</span></div>
+        </a>
+        <a class="card school-card" href="./schools/johns-hopkins.html" style="text-decoration:none;color:inherit;">
+          <div class="school-card__row"><h3>Johns Hopkins University</h3>
+            <div class="school-card__score" title="Intl aid friendliness 3/5"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+          </div>
+          <div class="school-card__meta">Baltimore, MD · Private research university (reach)</div>
+          <p style="font-size:var(--fs-sm);margin:0;">No direct BSN — undergrad + graduate-entry MSN path. Need-AWARE for intl undergrads; meets full need if admitted. Long-shot reach.</p>
+          <div class="card__footer"><span class="muted">~$85k sticker · </span><span>Details →</span></div>
+        </a>
+      </div>
       <p style="margin-top:var(--sp-5);"><a href="./schools.html">See all 25 schools with filters →</a></p>
     </section>
 

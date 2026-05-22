@@ -12,6 +12,7 @@
   function render(prompts) {
     var host = document.querySelector('[data-prompt-list]');
     if (!host) return;
+    host.setAttribute('aria-busy', 'false');
     host.innerHTML = prompts.map(function (p, idx) {
       return '' +
         '<article class="prompt" id="prompt-' + p.id + '">' +
@@ -20,7 +21,7 @@
               '<h3 style="margin:0;">' + p.title + '</h3>' +
               '<p class="muted" style="font-size:var(--fs-sm);margin:var(--sp-1) 0 0;">' + p.when_to_use + '</p>' +
             '</div>' +
-            '<div><button class="btn btn-secondary btn-sm" data-copy-prompt="' + idx + '">Copy</button> <span class="copy-ok" data-copy-ok="' + idx + '" hidden>Copied</span></div>' +
+            '<div><button class="btn btn-secondary btn-sm" data-copy-prompt="' + idx + '" aria-label="Copy prompt: ' + escapeHtml(p.title) + '">Copy</button> <span class="copy-ok" data-copy-ok="' + idx + '" role="status" aria-live="polite" hidden>Copied</span></div>' +
           '</div>' +
           '<pre data-prompt-body="' + idx + '">' + escapeHtml(p.prompt) + '</pre>' +
         '</article>';

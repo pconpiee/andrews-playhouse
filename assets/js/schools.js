@@ -32,6 +32,7 @@
     var list = schoolsData.filter(matches);
     var count = document.querySelector('[data-school-count]');
     if (count) count.textContent = list.length + (list.length === 1 ? ' school' : ' schools');
+    grid.setAttribute('aria-busy', 'false');
 
     if (!list.length) {
       grid.innerHTML = '<p class="muted">No schools match those filters. Try clearing one.</p>';
@@ -64,11 +65,16 @@
     }).join('');
   }
 
+  function syncChip(c, value) {
+    var active = c.getAttribute('data-filter') === value;
+    c.classList.toggle('is-active', active);
+    c.setAttribute('aria-pressed', active ? 'true' : 'false');
+  }
+
   function wireFilters() {
-    // Reflect the current state (which may have come from URL query params) into the chips.
     ['tag', 'region'].forEach(function (group) {
       document.querySelectorAll('[data-filter-group="' + group + '"]').forEach(function (c) {
-        c.classList.toggle('is-active', c.getAttribute('data-filter') === state[group]);
+        syncChip(c, state[group]);
       });
     });
     document.querySelectorAll('[data-filter]').forEach(function (chip) {
@@ -77,7 +83,7 @@
         var value = chip.getAttribute('data-filter');
         state[group] = value;
         document.querySelectorAll('[data-filter-group="' + group + '"]').forEach(function (c) {
-          c.classList.toggle('is-active', c.getAttribute('data-filter') === value);
+          syncChip(c, value);
         });
         renderGrid();
       });

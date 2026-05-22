@@ -38,6 +38,7 @@
     var list = data.filter(matches);
     var count = document.querySelector('[data-scholarship-count]');
     if (count) count.textContent = list.length + (list.length === 1 ? ' scholarship' : ' scholarships');
+    host.setAttribute('aria-busy', 'false');
     if (!list.length) { host.innerHTML = '<p class="muted">No matches. Clear a filter.</p>'; return; }
 
     host.innerHTML = list.map(function (s) {
@@ -66,14 +67,23 @@
     }).join('');
   }
 
+  function syncChip(c, value) {
+    var active = c.getAttribute('data-filter') === value;
+    c.classList.toggle('is-active', active);
+    c.setAttribute('aria-pressed', active ? 'true' : 'false');
+  }
+
   function wireFilters() {
+    document.querySelectorAll('[data-filter-group="tag"]').forEach(function (c) {
+      syncChip(c, state.tag);
+    });
     document.querySelectorAll('[data-filter]').forEach(function (chip) {
       chip.addEventListener('click', function () {
         var group = chip.getAttribute('data-filter-group');
         var value = chip.getAttribute('data-filter');
         state[group] = value;
         document.querySelectorAll('[data-filter-group="' + group + '"]').forEach(function (c) {
-          c.classList.toggle('is-active', c.getAttribute('data-filter') === value);
+          syncChip(c, value);
         });
         render();
       });

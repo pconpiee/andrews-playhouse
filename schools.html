@@ -31,36 +31,36 @@
 
     <section class="container">
       <div class="filter-bar">
-        <div class="filter-bar__group">
-          <span class="filter-bar__label">Type</span>
+        <div class="filter-bar__group" role="group" aria-labelledby="filter-type-label">
+          <span class="filter-bar__label" id="filter-type-label">Type</span>
           <div class="cluster">
-            <button class="chip is-active" data-filter-group="tag" data-filter="all">All</button>
-            <button class="chip" data-filter-group="tag" data-filter="faith-affiliated">Faith-affiliated</button>
-            <button class="chip" data-filter-group="tag" data-filter="public">Public</button>
-            <button class="chip" data-filter-group="tag" data-filter="need-blind">Need-blind elite</button>
-            <button class="chip" data-filter-group="tag" data-filter="adn-to-bsn">ADN-to-BSN path</button>
-            <button class="chip" data-filter-group="tag" data-filter="intl-friendly">Documented intl aid</button>
-            <button class="chip" data-filter-group="tag" data-filter="priority">Priority pick</button>
+            <button class="chip is-active" type="button" aria-pressed="true" data-filter-group="tag" data-filter="all">All</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="faith-affiliated">Faith-affiliated</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="public">Public</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="need-blind">Need-blind elite</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="adn-to-bsn">ADN-to-BSN path</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="intl-friendly">Documented intl aid</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="tag" data-filter="priority">Priority pick</button>
           </div>
         </div>
-        <div class="filter-bar__group">
-          <span class="filter-bar__label">Region</span>
+        <div class="filter-bar__group" role="group" aria-labelledby="filter-region-label">
+          <span class="filter-bar__label" id="filter-region-label">Region</span>
           <div class="cluster">
-            <button class="chip is-active" data-filter-group="region" data-filter="all">All</button>
-            <button class="chip" data-filter-group="region" data-filter="Northeast">Northeast</button>
-            <button class="chip" data-filter-group="region" data-filter="Southeast">Southeast</button>
-            <button class="chip" data-filter-group="region" data-filter="South">South</button>
-            <button class="chip" data-filter-group="region" data-filter="Midwest">Midwest</button>
-            <button class="chip" data-filter-group="region" data-filter="West">West</button>
+            <button class="chip is-active" type="button" aria-pressed="true" data-filter-group="region" data-filter="all">All</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="region" data-filter="Northeast">Northeast</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="region" data-filter="Southeast">Southeast</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="region" data-filter="South">South</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="region" data-filter="Midwest">Midwest</button>
+            <button class="chip" type="button" aria-pressed="false" data-filter-group="region" data-filter="West">West</button>
           </div>
         </div>
       </div>
 
-      <p class="muted" style="margin-top:var(--sp-4);font-size:var(--fs-sm);">
+      <p class="muted" style="margin-top:var(--sp-4);font-size:var(--fs-sm);" aria-live="polite">
         <span data-school-count>—</span> · International aid score is 1 (very limited) to 5 (need-blind or all-students aid).
       </p>
 
-      <div class="grid grid-2" data-school-grid style="margin-top:var(--sp-4);"></div>
+      <div class="grid grid-2" data-school-grid aria-busy="true" aria-live="polite" style="margin-top:var(--sp-4);"></div>
 
       <div class="callout callout--info" style="margin-top:var(--sp-7);">
         <h4>How to use this list</h4>
